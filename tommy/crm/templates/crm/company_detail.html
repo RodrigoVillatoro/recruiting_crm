@@ -1,0 +1,52 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - {{ company.name }}
+{% endblock %}
+
+{% block content %}
+  <article>
+    <h2>{{ company.name }}</h2>
+    <dl>
+      <dt>Date Founded</dt>
+      <dd>{{ company.timestamp|date:"F jS, Y" }}</dd>
+      <dt>Website</dt>
+      <dd>{{ company.website|urlize }}</dd>
+      <dt>Contact</dt>
+        <dd>{{ company.contact }}
+        <dt>Skills{{ company.skills.count|pluralize }}</dt>
+          {% for skill in startup.skills.all %}
+            <dd><a href="">
+              {{ skill.name }}
+            </a></dd>
+          {% endfor %}
+    </dl>
+    {{ company.description|linebreaks }}
+{#        {% if company.processes.all %}#}
+{#            <section>#}
+{#              <h3>Processes</h3>#}
+{#              <ul>#}
+{#                {% for process in company.processes.all %}#}
+{#                  <li>#}
+{#                    <a href="{{ newslink.link }}">#}
+{#                      {{ newslink.title|title }}</a>#}
+{#                  </li>#}
+{#                {% endfor %}#}
+{#              </ul>#}
+{#            </section>#}
+{#        {% endif %}#}
+{#        {% if startup.blog_posts.all %}#}
+{#            <section>#}
+{#              <h3>Blog Post{{ startup.blog_posts.all|pluralize }}</h3>#}
+{#              <ul>#}
+{#                {% for post in startup.blog_posts.all %}#}
+{#                  <li>#}
+{#                    <a href="">#}
+{#                      {{ post.title|title }}</a>#}
+{#                  </li>#}
+{#                {% endfor %}#}
+{#              </ul>#}
+{#            </section>#}
+{#        {% endif %}#}
+  </article>
+{% endblock %}

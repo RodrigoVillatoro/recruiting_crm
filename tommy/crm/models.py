@@ -20,7 +20,7 @@ class City(models.Model):
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     feature_code = models.CharField(max_length=15)
     country_code = models.CharField(max_length=2, db_index=True)
-    population = models.IntegerField()
+    population = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('name', 'country_code')
@@ -59,7 +59,7 @@ class Company(models.Model):
         help_text='Official company, in case of duplicates',
         blank=True)
     fee = models.CharField(max_length=25, blank=True)
-    nubelo_id = models.IntegerField(blank=True)
+    nubelo_id = models.IntegerField(null=True, blank=True)
     nubelo_url = models.URLField(max_length=250, blank=True)
     status = models.CharField(
         max_length=15, choices=STATUS_CHOICES, default='n/a')

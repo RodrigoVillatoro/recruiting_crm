@@ -1,0 +1,19 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - Companies
+{% endblock %}
+
+{% block content %}
+  <h2>Companies</h2>
+  <ul>
+    {% for company in company_list %}
+      <li>
+        <a href="">
+          {{ company.name }}</a>
+      </li>
+    {% empty %}
+      <li><em>No Companies Available</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
