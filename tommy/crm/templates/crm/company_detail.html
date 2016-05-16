@@ -8,18 +8,18 @@
   <article>
     <h2>{{ company.name }}</h2>
     <dl>
-      <dt>Date Founded</dt>
+      <dt>Date Added</dt>
       <dd>{{ company.timestamp|date:"F jS, Y" }}</dd>
       <dt>Website</dt>
       <dd>{{ company.website|urlize }}</dd>
       <dt>Contact</dt>
-        <dd>{{ company.contact }}
-        <dt>Skills{{ company.skills.count|pluralize }}</dt>
-          {% for skill in startup.skills.all %}
-            <dd><a href="">
-              {{ skill.name }}
-            </a></dd>
-          {% endfor %}
+      <dd>{{ company.contact }}
+      <dt>Skills{{ company.skills.count|pluralize }}</dt>
+      {% for skill in company.skills.all %}
+        <dd><a href="">
+          {{ skill.name }}
+        </a></dd>
+      {% endfor %}
     </dl>
     {{ company.description|linebreaks }}
 {#        {% if company.processes.all %}#}

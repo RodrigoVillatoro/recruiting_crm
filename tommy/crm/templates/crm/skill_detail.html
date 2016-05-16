@@ -1,0 +1,43 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - {{ skill.name }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ skill.name }}</h2>
+  {% if skill.companies.all %}
+    <section>
+      <h3>Compan{{ skill.companies.count|pluralize:"y,ies" }}</h3>
+      <p>
+        This skill is associated with
+        {{ skill.companies.count }}
+        compan{{ skill.companies.count|pluralize:"y,ies" }}
+      </p>
+      <ul>
+        {% for company in skill.companies.all %}
+          <li>
+            <a href="{{ company.get_absolute_url }}">{{ company.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+{#  {% if tag.blog_post.all %}#}
+{#    <section>#}
+{#      <h3>Blog Post{{ tag.blog_posts.count|pluralize }}</h3>#}
+{#      <ul>#}
+{#        {% for post in tag.blog_posts.all %}#}
+{#          <li>#}
+{#            <a href="">{{ post.title|title }}</a>#}
+{#          </li>#}
+{#        {% endfor %}#}
+{#      </ul>#}
+{#    </section>#}
+{#  {% endif %}#}
+
+  {% if not skill.companies.all %}
+    <p>This skill is not related to any content.</p>
+  {% endif %}
+{% endblock %}

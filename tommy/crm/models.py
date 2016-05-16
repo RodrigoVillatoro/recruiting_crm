@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 # from django.contrib.auth.models import User
 
@@ -8,6 +9,9 @@ class Skill(models.Model):
 
     class Meta:
         ordering = ('name',)
+
+    def get_absolute_url(self):
+        return reverse('crm_skill_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name
@@ -26,7 +30,7 @@ class City(models.Model):
         ordering = ('name', 'country_code')
 
     def __str__(self):
-        return '{}, {}'.format(self.name, self.country_code)
+        return '{}, {}'.format(self.name, self.country_code.upper())
 
 
 class Company(models.Model):
@@ -73,6 +77,9 @@ class Company(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+    def get_absolute_url(self):
+        return reverse('crm_company_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.name

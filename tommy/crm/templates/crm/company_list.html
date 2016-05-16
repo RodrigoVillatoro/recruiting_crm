@@ -9,7 +9,7 @@
   <ul>
     {% for company in company_list %}
       <li>
-        <a href="">
+        <a href="{{ company.get_absolute_url }}">
           {{ company.name }}</a>
       </li>
     {% empty %}
