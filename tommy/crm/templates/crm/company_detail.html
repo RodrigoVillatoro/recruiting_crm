@@ -16,25 +16,38 @@
       <dd>{{ company.contact }}
       <dt>Skills{{ company.skills.count|pluralize }}</dt>
       {% for skill in company.skills.all %}
-        <dd><a href="">
+        <dd><a href="{{ skill.get_absolute_url }}">
           {{ skill.name }}
         </a></dd>
       {% endfor %}
     </dl>
     {{ company.description|linebreaks }}
-{#        {% if company.processes.all %}#}
-{#            <section>#}
-{#              <h3>Processes</h3>#}
-{#              <ul>#}
-{#                {% for process in company.processes.all %}#}
-{#                  <li>#}
-{#                    <a href="{{ newslink.link }}">#}
-{#                      {{ newslink.title|title }}</a>#}
-{#                  </li>#}
-{#                {% endfor %}#}
-{#              </ul>#}
-{#            </section>#}
-{#        {% endif %}#}
+    {% if company.processes.all %}
+      <section>
+        <h3>Processes</h3>
+        <ul>
+          {% for process in company.processes.all %}
+            <li>
+              <a href="{{ process.get_absolute_url }}">
+                {{ process.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+    <section>
+      <h3>Notes:</h3>
+      <ul>
+      {% for company_note in company.company_notes.all %}
+        <li>
+          {{ company_note.timestamp|date:'Y-m-d' }}:
+          {{ company_note.description }}
+        </li>
+      {% empty %}
+        <li>No notes available.</li>
+      {% endfor %}
+      </ul>
+    </section>
 {#        {% if startup.blog_posts.all %}#}
 {#            <section>#}
 {#              <h3>Blog Post{{ startup.blog_posts.all|pluralize }}</h3>#}

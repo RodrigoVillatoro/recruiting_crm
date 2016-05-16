@@ -77,6 +77,7 @@ class Company(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+        verbose_name_plural = "companies"
 
     def get_absolute_url(self):
         return reverse('crm_company_detail', kwargs={'slug': self.slug})
@@ -156,7 +157,7 @@ class Process(models.Model):
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     fee = models.CharField(max_length=25, blank=True)
     total_income = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True)
+        max_digits=10, decimal_places=2, null=True, blank=True)
     document = models.FileField(
         upload_to='uploads/docs/process/%Y/%m/%d/', blank=True)
     slug = models.SlugField(max_length=250, unique=True)
@@ -172,6 +173,9 @@ class Process(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+    def get_absolute_url(self):
+        return reverse('crm_process_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return '{}: {}'.format(self.company, self.title)

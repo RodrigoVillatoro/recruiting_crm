@@ -1,0 +1,20 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - Processes
+{% endblock %}
+
+{% block content %}
+  <h2>Processes</h2>
+  <ul>
+    {% for process in process_list %}
+      <li>
+        <a href="{{ process.get_absolute_url }}">
+          {{ process.company }}: {{ process.title }}
+        </a>
+      </li>
+    {% empty %}
+      <li><em>No Processes Available</em></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

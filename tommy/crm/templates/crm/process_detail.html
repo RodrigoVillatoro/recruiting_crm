@@ -1,0 +1,21 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - {{ process.title }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ process.title }}</h2>
+  <p>{{ process.company }}</p>
+  <h3>Notes:</h3>
+  <ul>
+    {% for process_note in process.process_notes.all %}
+      <li>
+        {{ process_note.timestamp|date:'Y-m-d' }}:
+        {{ process_note.description }}
+      </li>
+    {% empty %}
+      <li>No Notes available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

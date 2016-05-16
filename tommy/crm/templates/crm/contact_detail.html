@@ -1,0 +1,10 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+  {{ block.super }} - {{ contact.name }}
+{% endblock %}
+
+{% block content %}
+  <h2>{{ contact.name }}</h2>
+  <p>{{ contact.company }}</p>
+{% endblock %}

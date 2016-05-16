@@ -9,6 +9,22 @@
     <header>
       <h1>Tommy</h1>
     </header>
+    <nav>
+      <ul>
+        <li>
+          <a href="{% url 'crm_company_list' %}">Companies</a>
+        </li>
+        <li>
+          <a href="{% url 'crm_contact_list' %}">Contacts</a>
+        </li>
+        <li>
+          <a href="{% url 'crm_process_list' %}">Processes</a>
+        </li>
+        <li>
+          <a href="{% url 'crm_skill_list' %}">Skills</a>
+        </li>
+      </ul>
+    </nav>
     <main>
       {% block content %}
 
