@@ -1,16 +1,10 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
-from .models import Company, CompanyNote, Process, ProcessNote, Skill
-
-
-class SkillForm(forms.ModelForm):
-    class Meta:
-        model = Skill
-        fields = '__all__'
+from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
+from .utils import SlugCleanMixin
 
 
-class CompanyForm(forms.ModelForm):
+class CompanyForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Company
         fields = '__all__'
@@ -22,7 +16,13 @@ class CompanyNoteForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ProcessForm(forms.ModelForm):
+class ContactForm(SlugCleanMixin, forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+
+
+class ProcessForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Process
         fields = '__all__'
@@ -31,4 +31,10 @@ class ProcessForm(forms.ModelForm):
 class ProcessNoteForm(forms.ModelForm):
     class Meta:
         model = ProcessNote
+        fields = '__all__'
+
+
+class SkillForm(SlugCleanMixin, forms.ModelForm):
+    class Meta:
+        model = Skill
         fields = '__all__'

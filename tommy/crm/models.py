@@ -110,6 +110,9 @@ class CompanyNote(models.Model):
     class Meta:
         ordering = ('-timestamp',)
 
+    def get_absolute_url(self):
+        return self.company.get_absolute_url()
+
     def __str__(self):
         return self.action
 
@@ -133,6 +136,9 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ('email',)
+
+    def get_absolute_url(self):
+        return reverse('crm_contact_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return '{}: {}'.format(self.email, self.company)
@@ -203,6 +209,9 @@ class ProcessNote(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+
+    def get_absolute_url(self):
+        return self.process.get_absolute_url()
 
     def __str__(self):
         return '{}: {}'.format(self.process, self.action)

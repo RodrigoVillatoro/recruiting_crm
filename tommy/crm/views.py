@@ -1,7 +1,40 @@
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import View
 
-
+from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
+                    ProcessNoteForm, SkillForm)
 from .models import Company, Contact, Process, Skill
+from .utils import ObjectCreateMixin
+
+
+class CompanyCreate(ObjectCreateMixin, View):
+    form_class = CompanyForm
+    template_name = 'crm/company_form.html'
+
+
+class CompanyNoteCreate(ObjectCreateMixin, View):
+    form_class = CompanyNoteForm
+    template_name = 'crm/company_note_form.html'
+
+
+class ContactCreate(ObjectCreateMixin, View):
+    form_class = ContactForm
+    template_name = 'crm/contact_form.html'
+
+
+class ProcessCreate(ObjectCreateMixin, View):
+    form_class = ProcessForm
+    template_name = 'crm/process_form.html'
+
+
+class ProcessNoteCreate(ObjectCreateMixin, View):
+    form_class = ProcessNoteForm
+    template_name = 'crm/process_note_form.html'
+
+
+class SkillCreate(ObjectCreateMixin, View):
+    form_class = SkillForm
+    template_name = 'crm/skill_form.html'
 
 
 def company_list(request):
