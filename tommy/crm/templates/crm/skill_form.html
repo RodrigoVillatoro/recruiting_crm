@@ -1,0 +1,17 @@
+{% extends parent_template|default:'crm/base_crm.html' %}
+
+{% block title %}
+  {{ block.super }} - Create Skill
+{% endblock %}
+
+{% block content %}
+  <div>
+    <div>
+      <form action="{% url 'crm_skill_create' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Skill</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

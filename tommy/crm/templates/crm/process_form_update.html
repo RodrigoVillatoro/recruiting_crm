@@ -1,0 +1,17 @@
+{% extends parent_template|default:"crm/base_crm.html" %}
+
+{% block title %}
+{{ block.super }} - Update Process
+{% endblock %}
+
+{% block content %}
+  <div>
+    <div>
+      <form action="{{ process.get_update_url }}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Process</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
