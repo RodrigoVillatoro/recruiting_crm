@@ -1,15 +1,21 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, Contact, Process, Skill
-from .utils import ObjectCreateMixin
+from .utils import ObjectCreateMixin, ObjectUpdateMixin
 
 
 class CompanyCreate(ObjectCreateMixin, View):
     form_class = CompanyForm
     template_name = 'crm/company_form.html'
+
+
+class CompanyUpdate(ObjectUpdateMixin, View):
+    form_class = CompanyForm
+    model = Company
+    template_name = 'crm/company_form_update.html'
 
 
 class CompanyNoteCreate(ObjectCreateMixin, View):
@@ -22,9 +28,21 @@ class ContactCreate(ObjectCreateMixin, View):
     template_name = 'crm/contact_form.html'
 
 
+class ContactUpdate(ObjectUpdateMixin, View):
+    form_class = ContactForm
+    model = Contact
+    template_name = 'crm/contact_form_update.html'
+
+
 class ProcessCreate(ObjectCreateMixin, View):
     form_class = ProcessForm
     template_name = 'crm/process_form.html'
+
+
+class ProcessUpdate(ObjectUpdateMixin, View):
+    form_class = ProcessForm
+    model = Process
+    template_name = 'crm/process_form_update.html'
 
 
 class ProcessNoteCreate(ObjectCreateMixin, View):

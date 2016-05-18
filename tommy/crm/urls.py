@@ -1,9 +1,11 @@
 from django.conf.urls import url
 
-from .views import (CompanyCreate, CompanyNoteCreate, ContactCreate,
-                    ProcessCreate, ProcessNoteCreate, SkillCreate,
-                    company_detail, company_list, contact_detail, contact_list,
-                    process_detail, process_list, skill_detail, skill_list)
+from .views import (CompanyCreate, CompanyUpdate, CompanyNoteCreate,
+                    ContactCreate, ContactUpdate, ProcessCreate,
+                    ProcessUpdate, ProcessNoteCreate, SkillCreate,
+                    company_detail, company_list, contact_detail,
+                    contact_list, process_detail, process_list, skill_detail,
+                    skill_list)
 
 
 urlpatterns = [
@@ -21,6 +23,11 @@ urlpatterns = [
         r'^company/(?P<slug>[\w\-]+)/$',
         company_detail,
         name='crm_company_detail'
+    ),
+    url(
+        r'^company/(?P<slug>[\w\-]+)/update/$',
+        CompanyUpdate.as_view(),
+        name='crm_company_update'
     ),
     url(
         r'^company/note/create/$',
@@ -43,6 +50,11 @@ urlpatterns = [
         name='crm_contact_detail'
     ),
     url(
+        r'^contact/(?P<slug>[\w\-]+)/upgrade/$',
+        ContactUpdate.as_view(),
+        name='crm_contact_update'
+    ),
+    url(
         r'^process/$',
         process_list,
         name='crm_process_list'
@@ -56,6 +68,11 @@ urlpatterns = [
         r'^process/(?P<slug>[\w\-]+)/$',
         process_detail,
         name='crm_process_detail'
+    ),
+    url(
+        r'^process/(?P<slug>[\w\-]+)/update/$',
+        ProcessUpdate.as_view(),
+        name='crm_process_update'
     ),
     url(
         r'^process/note/create/$',

@@ -6,6 +6,7 @@
 
 {% block content %}
   <h2>Skills</h2>
+  <a href="{% url 'crm_skill_create' %}">Create Skill</a>
   <ul>
     {% for skill in skill_list %}
       <li>

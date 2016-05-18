@@ -82,6 +82,9 @@ class Company(models.Model):
     def get_absolute_url(self):
         return reverse('crm_company_detail', kwargs={'slug': self.slug})
 
+    def get_update_url(self):
+        return reverse('crm_company_update', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.name
 
@@ -140,6 +143,12 @@ class Contact(models.Model):
     def get_absolute_url(self):
         return reverse('crm_contact_detail', kwargs={'slug': self.slug})
 
+    def get_update_url(self):
+        return reverse('crm_contact_update', kwargs={'slug': self.slug})
+
+    def get_full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
     def __str__(self):
         return '{}: {}'.format(self.email, self.company)
 
@@ -182,6 +191,9 @@ class Process(models.Model):
 
     def get_absolute_url(self):
         return reverse('crm_process_detail', kwargs={'slug': self.slug})
+
+    def get_update_url(self):
+        return reverse('crm_process_update', kwargs={'slug': self.slug})
 
     def __str__(self):
         return '{}: {}'.format(self.company, self.title)

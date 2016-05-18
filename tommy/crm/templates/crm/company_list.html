@@ -6,6 +6,7 @@
 
 {% block content %}
   <h2>Companies</h2>
+  <a href="{% url 'crm_company_create' %}">Create Company</a>
   <ul>
     {% for company in company_list %}
       <li>

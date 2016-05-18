@@ -6,11 +6,11 @@
 
 {% block content %}
   <h2>Contacts</h2>
+  <a href="{% url 'crm_contact_create' %}">Create Contact</a>
   <ul>
     {% for contact in contact_list %}
       <li>
-        <a href="{{ contact.get_absolute_url }}">
-          {{ contact.name }}</a>
+        <a href="{{ contact.get_absolute_url }}">{{ contact.get_full_name }} ({{ contact.company }})</a>
       </li>
     {% empty %}
       <li><em>No Contacts Available</em></li>

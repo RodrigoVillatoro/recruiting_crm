@@ -7,6 +7,11 @@
 {% block content %}
   <article>
     <h2>{{ company.name }}</h2>
+    <ul>
+      <li>
+        <a href="{{ company.get_update_url }}">Update Company</a>
+      </li>
+    </ul>
     <dl>
       <dt>Date Added</dt>
       <dd>{{ company.timestamp|date:"F jS, Y" }}</dd>
@@ -37,6 +42,7 @@
     {% endif %}
     <section>
       <h3>Notes:</h3>
+      <a href="{% url 'crm_company_note_create' %}">Add Note</a>
       <ul>
       {% for company_note in company.company_notes.all %}
         <li>

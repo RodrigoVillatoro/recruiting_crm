@@ -6,8 +6,14 @@
 
 {% block content %}
   <h2>{{ process.title }}</h2>
-  <p>{{ process.company }}</p>
+  <ul>
+    <li>
+      <a href="{{ process.get_update_url }}">Update Process</a>
+    </li>
+  </ul>
+  <a href="{{ process.company.get_absolute_url }}">{{ process.company }}</a>
   <h3>Notes:</h3>
+  <a href="{% url 'crm_process_note_create' %}">Add Note</a>
   <ul>
     {% for process_note in process.process_notes.all %}
       <li>
