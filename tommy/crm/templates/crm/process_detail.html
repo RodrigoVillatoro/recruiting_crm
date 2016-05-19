@@ -9,10 +9,10 @@
   <ul>
     <li><a href="{{ process.get_update_url }}">Update</a></li>
     <li><a href="{{ process.get_delete_url }}">Delete</a></li>
+    <li><a href="{% url 'crm_process_note_create' %}">Add Note</a></li>
   </ul>
-  <a href="{{ process.company.get_absolute_url }}">{{ process.company }}</a>
+  <p>Company: <a href="{{ process.company.get_absolute_url }}">{{ process.company }}</a> </p>
   <h3>Notes:</h3>
-  <a href="{% url 'crm_process_note_create' %}">Add Note</a>
   <ul>
     {% for process_note in process.process_notes.all %}
       <li>
@@ -20,7 +20,7 @@
         {{ process_note.description }}
       </li>
     {% empty %}
-      <li>No Notes available.</li>
+      <li>No notes available.</li>
     {% endfor %}
   </ul>
 {% endblock %}

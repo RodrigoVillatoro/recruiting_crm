@@ -10,15 +10,22 @@
     <ul>
       <li><a href="{{ company.get_update_url }}">Update</a></li>
       <li><a href="{{ company.get_delete_url }}">Delete</a></li>
+      <li><a href="{% url 'crm_process_create' %}">Add Process</a></li>
+      <li><a href="{% url 'crm_contact_create' %}">Add Contact</a></li>
+      <li><a href="{% url 'crm_company_note_create' %}">Add Note</a></li>
     </ul>
     <dl>
       <dt>Date Added</dt>
       <dd>{{ company.timestamp|date:"F jS, Y" }}</dd>
       <dt>Website</dt>
       <dd>{{ company.website|urlize }}</dd>
-      <dt>Contact</dt>
-      <dd>{{ company.contact }}
-      <dt>Skills{{ company.skills.count|pluralize }}</dt>
+      <dt>Contact{{ company.contact.count|pluralize }}</dt>
+      {% for contact in company.contacts.all %}
+        <dd><a href="{{ contact.get_absolute_url }}">
+          {{ contact.get_full_name }}
+        </a></dd>
+      {% endfor %}
+      <dt>Skill{{ company.skills.count|pluralize }}</dt>
       {% for skill in company.skills.all %}
         <dd><a href="{{ skill.get_absolute_url }}">
           {{ skill.name }}
@@ -41,7 +48,6 @@
     {% endif %}
     <section>
       <h3>Notes:</h3>
-      <a href="{% url 'crm_company_note_create' %}">Add Note</a>
       <ul>
       {% for company_note in company.company_notes.all %}
         <li>
