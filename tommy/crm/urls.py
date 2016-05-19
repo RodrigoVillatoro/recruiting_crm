@@ -1,8 +1,9 @@
 from django.conf.urls import url
 
-from .views import (CompanyCreate, CompanyUpdate, CompanyNoteCreate,
-                    ContactCreate, ContactUpdate, ProcessCreate,
-                    ProcessUpdate, ProcessNoteCreate, SkillCreate,
+from .views import (CompanyCreate, CompanyDelete, CompanyUpdate,
+                    CompanyNoteCreate, ContactCreate, ContactDelete,
+                    ContactUpdate, ProcessCreate, ProcessDelete, ProcessUpdate,
+                    ProcessNoteCreate, SkillCreate,
                     company_detail, company_list, contact_detail,
                     contact_list, process_detail, process_list, skill_detail,
                     skill_list)
@@ -23,6 +24,11 @@ urlpatterns = [
         r'^company/(?P<slug>[\w\-]+)/$',
         company_detail,
         name='crm_company_detail'
+    ),
+    url(
+        r'^company/(?P<slug>[\w\-]+)/delete/$',
+        CompanyDelete.as_view(),
+        name='crm_company_delete'
     ),
     url(
         r'^company/(?P<slug>[\w\-]+)/update/$',
@@ -50,6 +56,11 @@ urlpatterns = [
         name='crm_contact_detail'
     ),
     url(
+        r'^contact/(?P<slug>[\w\-]+)/delete/$',
+        ContactDelete.as_view(),
+        name='crm_contact_delete'
+    ),
+    url(
         r'^contact/(?P<slug>[\w\-]+)/upgrade/$',
         ContactUpdate.as_view(),
         name='crm_contact_update'
@@ -68,6 +79,11 @@ urlpatterns = [
         r'^process/(?P<slug>[\w\-]+)/$',
         process_detail,
         name='crm_process_detail'
+    ),
+    url(
+        r'^process/(?P<slug>[\w\-]+)/delete/$',
+        ProcessDelete.as_view(),
+        name='crm_process_delete'
     ),
     url(
         r'^process/(?P<slug>[\w\-]+)/update/$',

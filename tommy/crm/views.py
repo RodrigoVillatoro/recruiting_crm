@@ -1,15 +1,22 @@
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import View
 
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, Contact, Process, Skill
-from .utils import ObjectCreateMixin, ObjectUpdateMixin
+from .utils import ObjectCreateMixin, ObjectDeleteMixin, ObjectUpdateMixin
 
 
 class CompanyCreate(ObjectCreateMixin, View):
     form_class = CompanyForm
     template_name = 'crm/company_form.html'
+
+
+class CompanyDelete(ObjectDeleteMixin, View):
+    model = Company
+    success_url = reverse_lazy('crm_company_list')
+    template_name = 'crm/company_confirm_delete.html'
 
 
 class CompanyUpdate(ObjectUpdateMixin, View):
@@ -28,6 +35,12 @@ class ContactCreate(ObjectCreateMixin, View):
     template_name = 'crm/contact_form.html'
 
 
+class ContactDelete(ObjectDeleteMixin, View):
+    model = Contact
+    success_url = reverse_lazy('crm_contact_list')
+    template_name = 'crm/contact_confirm_delete.html'
+
+
 class ContactUpdate(ObjectUpdateMixin, View):
     form_class = ContactForm
     model = Contact
@@ -37,6 +50,12 @@ class ContactUpdate(ObjectUpdateMixin, View):
 class ProcessCreate(ObjectCreateMixin, View):
     form_class = ProcessForm
     template_name = 'crm/process_form.html'
+
+
+class ProcessDelete(ObjectDeleteMixin, View):
+    model = Process
+    success_url = reverse_lazy('crm_process_list')
+    template_name = 'crm/process_confirm_delete.html'
 
 
 class ProcessUpdate(ObjectUpdateMixin, View):

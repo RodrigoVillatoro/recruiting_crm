@@ -10,6 +10,7 @@
       <form action="{{ contact.get_update_url }}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <a href="{{ contact.get_absolute_url }}">Cancel</a>
         <button type="submit">Update Contact</button>
       </form>
     </div>

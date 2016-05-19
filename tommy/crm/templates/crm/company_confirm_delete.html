@@ -10,6 +10,7 @@
       <form action="{{ company.get_delete_url }}" method="post">
         {% csrf_token %}
         <p>Are you sure you want to delete company {{ company.name }}?</p>
+        <p>Warning! This action will also delete all the information associated with this company: it's Contacts, Processes, Notes, etc.</p>
         <a href="{{ company.get_absolute_url }}">Cancel</a>
         <button type="submit">Delete Company</button>
       </form>

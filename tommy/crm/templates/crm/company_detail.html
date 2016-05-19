@@ -8,9 +8,8 @@
   <article>
     <h2>{{ company.name }}</h2>
     <ul>
-      <li>
-        <a href="{{ company.get_update_url }}">Update Company</a>
-      </li>
+      <li><a href="{{ company.get_update_url }}">Update</a></li>
+      <li><a href="{{ company.get_delete_url }}">Delete</a></li>
     </ul>
     <dl>
       <dt>Date Added</dt>
