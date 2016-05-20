@@ -142,6 +142,7 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ('email',)
+        unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
         return reverse('crm_contact_detail', kwargs={'slug': self.slug})
@@ -161,8 +162,8 @@ class Contact(models.Model):
 
 class Process(models.Model):
     JOB_TYPE_CHOICES = (
-        ('freelance', 'Freelance'),
         ('employee', 'Employee'),
+        ('freelance', 'Freelance'),
     )
     STATUS_CHOICES = (
         ('open', 'Open'),
@@ -194,6 +195,7 @@ class Process(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
+        unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
         return reverse('crm_process_detail', kwargs={'slug': self.slug})
