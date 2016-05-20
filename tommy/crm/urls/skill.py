@@ -1,12 +1,12 @@
 from django.conf.urls import url
 
-from ..views import SkillCreate, skill_detail, skill_list
+from ..views import SkillCreate, SkillList, skill_detail
 
 
 urlpatterns = [
     url(
         r'^$',
-        skill_list,
+        SkillList.as_view(),
         name='crm_skill_list'
     ),
     url(

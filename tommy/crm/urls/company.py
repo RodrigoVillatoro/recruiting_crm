@@ -1,13 +1,13 @@
 from django.conf.urls import url
 
 
-from ..views import (CompanyCreate, CompanyDelete, CompanyUpdate,
-                     CompanyNoteCreate, company_detail, company_list)
+from ..views import (CompanyCreate, CompanyDelete, CompanyList, CompanyUpdate,
+                     CompanyNoteCreate, company_detail)
 
 urlpatterns = [
     url(
         r'^$',
-        company_list,
+        CompanyList.as_view(),
         name='crm_company_list'
     ),
     url(

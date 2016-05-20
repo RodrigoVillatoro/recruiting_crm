@@ -1,14 +1,14 @@
 from django.conf.urls import url
 
 
-from ..views import (ContactCreate, ContactDelete, ContactUpdate,
-                     contact_detail, contact_list)
+from ..views import (ContactCreate, ContactDelete, ContactList, ContactUpdate,
+                     contact_detail)
 
 
 urlpatterns = [
     url(
         r'^$',
-        contact_list,
+        ContactList.as_view(),
         name='crm_contact_list'
     ),
     url(

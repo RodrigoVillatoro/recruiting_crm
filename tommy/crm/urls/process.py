@@ -1,13 +1,13 @@
 from django.conf.urls import url
 
-from ..views import (ProcessCreate, ProcessDelete, ProcessUpdate,
-                     ProcessNoteCreate, process_detail, process_list)
+from ..views import (ProcessCreate, ProcessDelete, ProcessList, ProcessUpdate,
+                     ProcessNoteCreate, process_detail)
 
 
 urlpatterns = [
     url(
         r'^$',
-        process_list,
+        ProcessList.as_view(),
         name='crm_process_list'
     ),
     url(

@@ -5,7 +5,8 @@ from django.views.generic import View
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, Contact, Process, Skill
-from .utils import ObjectCreateMixin, ObjectDeleteMixin, ObjectUpdateMixin
+from .utils import (ObjectCreateMixin, ObjectDeleteMixin, ObjectListMixin,
+                    ObjectUpdateMixin)
 
 
 class CompanyCreate(ObjectCreateMixin, View):
@@ -17,6 +18,11 @@ class CompanyDelete(ObjectDeleteMixin, View):
     model = Company
     success_url = reverse_lazy('crm_company_list')
     template_name = 'crm/company_confirm_delete.html'
+
+
+class CompanyList(ObjectListMixin, View):
+    model = Company
+    template_name = 'crm/company_list.html'
 
 
 class CompanyUpdate(ObjectUpdateMixin, View):
@@ -41,6 +47,11 @@ class ContactDelete(ObjectDeleteMixin, View):
     template_name = 'crm/contact_confirm_delete.html'
 
 
+class ContactList(ObjectListMixin, View):
+    model = Contact
+    template_name = 'crm/contact_list.html'
+
+
 class ContactUpdate(ObjectUpdateMixin, View):
     form_class = ContactForm
     model = Contact
@@ -56,6 +67,11 @@ class ProcessDelete(ObjectDeleteMixin, View):
     model = Process
     success_url = reverse_lazy('crm_process_list')
     template_name = 'crm/process_confirm_delete.html'
+
+
+class ProcessList(ObjectListMixin, View):
+    model = Process
+    template_name = 'crm/process_list.html'
 
 
 class ProcessUpdate(ObjectUpdateMixin, View):
@@ -74,11 +90,9 @@ class SkillCreate(ObjectCreateMixin, View):
     template_name = 'crm/skill_form.html'
 
 
-def company_list(request):
-    return render(
-        request,
-        'crm/company_list.html',
-        {'company_list': Company.objects.all()})
+class SkillList(ObjectListMixin, View):
+    model = Skill
+    template_name = 'crm/skill_list.html'
 
 
 def company_detail(request, slug):
@@ -86,35 +100,14 @@ def company_detail(request, slug):
     return render(request, 'crm/company_detail.html', {'company': company})
 
 
-def contact_list(request):
-    return render(
-        request,
-        'crm/contact_list.html',
-        {'contact_list': Contact.objects.all()})
-
-
 def contact_detail(request, slug):
     contact = get_object_or_404(Contact, slug__iexact=slug)
     return render(request, 'crm/contact_detail.html', {'contact': contact})
 
 
-def skill_list(request):
-    return render(
-        request,
-        'crm/skill_list.html',
-        {'skill_list': Skill.objects.all()})
-
-
 def skill_detail(request, slug):
     skill = get_object_or_404(Skill, slug__iexact=slug)
     return render(request, 'crm/skill_detail.html', {'skill': skill})
-
-
-def process_list(request):
-    return render(
-        request,
-        'crm/process_list.html',
-        {'process_list': Process.objects.all()})
 
 
 def process_detail(request, slug):

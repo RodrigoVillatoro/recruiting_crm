@@ -36,6 +36,17 @@ class ObjectDeleteMixin:
         return HttpResponseRedirect(self.success_url)
 
 
+class ObjectListMixin:
+    model = None
+    template_name = ''
+
+    def get(self, request):
+        objects = self.model.objects.all()
+        context_name = '{}_list'.format(self.model.__name__.lower())
+        context = {context_name: objects}
+        return render(request, self.template_name, context)
+
+
 class ObjectUpdateMixin:
     form_class = None
     model = None
