@@ -1,54 +1,63 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Tommy{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'site/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'site/css/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'site/js/bootstrap.min.js' %}">
+  {% block head %}{% endblock %}
 </head>
 <body>
-  <div>
-    <header>
-      <h1>Tommy</h1>
-    </header>
-    <nav>
-      <ul>
-        <li>
-          <a href="{% url 'crm_company_list' %}">Companies</a>
-        </li>
-        <li>
-          <a href="{% url 'crm_contact_list' %}">Contacts</a>
-        </li>
-        <li>
-          <a href="{% url 'crm_process_list' %}">Processes</a>
-        </li>
-        <li>
-          <a href="{% url 'crm_skill_list' %}">Skills</a>
-        </li>
-      </ul>
-    </nav>
-    {% if messages %}
-      <div>
-        <div>
-          <ul>
-            {% for message in messages %}
-              {% if message.tags %}
-                <li class="{{ message.tags }}">
-              {% else %}
-                <li>
-              {% endif %}
-              {{ message }}</li>
-            {% endfor %}
-          </ul>
+  <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+              <img alt="Brand" width="25" height="25" src="{% static 'site/img/logo.png' %}">
+            </a>
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="tommyNavbar">
+            <ul class="nav navbar-nav">
+              <li><a href="{% url 'crm_company_list' %}">Companies</a></li>
+              <li><a href="{% url 'crm_contact_list' %}">Contacts</a></li>
+              <li><a href="{% url 'crm_process_list' %}">Processes</a></li>
+              <li><a href="{% url 'crm_skill_list' %}">Skills</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
-    {% endif %}
-    <main>
-      {% block content %}
+      </nav>
+    <div>
+      <header>
+        <h1>Tommy</h1>
+      </header>
+      {% if messages %}
+        <div>
+          <div>
+            <ul>
+              {% for message in messages %}
+                {% if message.tags %}
+                  <li class="{{ message.tags }}">
+                {% else %}
+                  <li>
+                {% endif %}
+                {{ message }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+      <main>
+        {% block content %}
 
-      {% endblock %}
-    </main>
-    <footer>
-      <p>Tommy: Sales CRM</p>
-    </footer>
+        {% endblock %}
+      </main>
+      <footer>
+        <p>Tommy: Sales CRM</p>
+      </footer>
+    </div>
   </div>
 </body>
 </html>
