@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from ..views import SkillCreate, SkillList, skill_detail
+from ..views import SkillCreate, SkillDetail, SkillList
 
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     ),
     url(
         r'^(?P<slug>[\w\-]+)/$',
-        skill_detail,
+        SkillDetail.as_view(),
         name='crm_skill_detail'
     ),
 ]

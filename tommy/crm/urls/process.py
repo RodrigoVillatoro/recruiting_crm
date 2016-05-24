@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from ..views import (ProcessCreate, ProcessDelete, ProcessList, ProcessUpdate,
-                     ProcessNoteCreate, process_detail)
+from ..views import (ProcessCreate, ProcessDelete, ProcessDetail, ProcessList,
+                     ProcessUpdate, ProcessNoteCreate)
 
 
 urlpatterns = [
@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     url(
         r'^(?P<slug>[\w\-]+)/$',
-        process_detail,
+        ProcessDetail.as_view(),
         name='crm_process_detail'
     ),
     url(

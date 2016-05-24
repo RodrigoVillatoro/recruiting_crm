@@ -1,15 +1,15 @@
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import View
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import CreateView, DetailView, View
 
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, Contact, Process, Skill
-from .utils import (ObjectCreateMixin, ObjectDeleteMixin, ObjectListMixin,
+from .utils import (ObjectDeleteMixin, ObjectListMixin,
                     ObjectUpdateMixin)
 
 
-class CompanyCreate(ObjectCreateMixin, View):
+class CompanyCreate(CreateView):
     form_class = CompanyForm
     template_name = 'crm/company_form.html'
 
@@ -18,6 +18,10 @@ class CompanyDelete(ObjectDeleteMixin, View):
     model = Company
     success_url = reverse_lazy('crm_company_list')
     template_name = 'crm/company_confirm_delete.html'
+
+
+class CompanyDetail(DetailView):
+    model = Company
 
 
 class CompanyList(ObjectListMixin, View):
@@ -31,12 +35,12 @@ class CompanyUpdate(ObjectUpdateMixin, View):
     template_name = 'crm/company_form_update.html'
 
 
-class CompanyNoteCreate(ObjectCreateMixin, View):
+class CompanyNoteCreate(CreateView):
     form_class = CompanyNoteForm
     template_name = 'crm/company_note_form.html'
 
 
-class ContactCreate(ObjectCreateMixin, View):
+class ContactCreate(CreateView):
     form_class = ContactForm
     template_name = 'crm/contact_form.html'
 
@@ -45,6 +49,10 @@ class ContactDelete(ObjectDeleteMixin, View):
     model = Contact
     success_url = reverse_lazy('crm_contact_list')
     template_name = 'crm/contact_confirm_delete.html'
+
+
+class ContactDetail(DetailView):
+    model = Contact
 
 
 class ContactList(ObjectListMixin, View):
@@ -58,7 +66,7 @@ class ContactUpdate(ObjectUpdateMixin, View):
     template_name = 'crm/contact_form_update.html'
 
 
-class ProcessCreate(ObjectCreateMixin, View):
+class ProcessCreate(CreateView):
     form_class = ProcessForm
     template_name = 'crm/process_form.html'
 
@@ -67,6 +75,10 @@ class ProcessDelete(ObjectDeleteMixin, View):
     model = Process
     success_url = reverse_lazy('crm_process_list')
     template_name = 'crm/process_confirm_delete.html'
+
+
+class ProcessDetail(DetailView):
+    model = Process
 
 
 class ProcessList(ObjectListMixin, View):
@@ -80,36 +92,21 @@ class ProcessUpdate(ObjectUpdateMixin, View):
     template_name = 'crm/process_form_update.html'
 
 
-class ProcessNoteCreate(ObjectCreateMixin, View):
+class ProcessNoteCreate(CreateView):
     form_class = ProcessNoteForm
     template_name = 'crm/process_note_form.html'
 
 
-class SkillCreate(ObjectCreateMixin, View):
+class SkillCreate(CreateView):
     form_class = SkillForm
     template_name = 'crm/skill_form.html'
+
+
+class SkillDetail(DetailView):
+    model = Skill
 
 
 class SkillList(ObjectListMixin, View):
     model = Skill
     template_name = 'crm/skill_list.html'
 
-
-def company_detail(request, slug):
-    company = get_object_or_404(Company, slug__iexact=slug)
-    return render(request, 'crm/company_detail.html', {'company': company})
-
-
-def contact_detail(request, slug):
-    contact = get_object_or_404(Contact, slug__iexact=slug)
-    return render(request, 'crm/contact_detail.html', {'contact': contact})
-
-
-def skill_detail(request, slug):
-    skill = get_object_or_404(Skill, slug__iexact=slug)
-    return render(request, 'crm/skill_detail.html', {'skill': skill})
-
-
-def process_detail(request, slug):
-    process = get_object_or_404(Process, slug__iexact=slug)
-    return render(request, 'crm/process_detail.html', {'process': process})

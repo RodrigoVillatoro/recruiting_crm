@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
 
-from ..views import (ContactCreate, ContactDelete, ContactList, ContactUpdate,
-                     contact_detail)
+from ..views import (ContactCreate, ContactDelete, ContactDetail, ContactList,
+                     ContactUpdate)
 
 
 urlpatterns = [
@@ -18,7 +18,7 @@ urlpatterns = [
     ),
     url(
         r'^(?P<slug>[\w\-]+)/$',
-        contact_detail,
+        ContactDetail.as_view(),
         name='crm_contact_detail'
     ),
     url(
