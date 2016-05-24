@@ -1,17 +1,17 @@
 {% extends parent_template|default:'crm/base_crm.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
   {{ block.super }} - Create Company
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div>
-      <form action="{% url 'crm_company_create' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Company</button>
-      </form>
-    </div>
+  <h2>Create Company</h2>
+  <div class="col-md-7">
+    <form action="{% url 'crm_company_create' %}" method="post" class="form-horizontal">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <input class="btn btn-default" type="submit" value="Create Company">
+    </form>
   </div>
 {% endblock %}
