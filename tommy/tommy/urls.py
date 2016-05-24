@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 from crm.urls import (company as company_urls,
                       contact as contact_urls,
@@ -22,6 +23,13 @@ from crm.urls import (company as company_urls,
                       skill as skill_urls)
 
 urlpatterns = [
+    url(
+        r'^$',
+        RedirectView.as_view(
+            pattern_name='crm_company_list',
+            permanent=False,
+        )
+    ),
     url(r'^admin/', admin.site.urls),
     url(r'^company/', include(company_urls)),
     url(r'^contact/', include(contact_urls)),
