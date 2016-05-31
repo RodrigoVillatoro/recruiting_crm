@@ -83,8 +83,9 @@ class ProcessDelete(CompanyContextMixin, ProcessGetObjectMixin, DeleteView):
     slug_url_kwarg = 'process_slug'
 
 
-class ProcessDetail(DetailView):
+class ProcessDetail(CompanyContextMixin, ProcessGetObjectMixin, DetailView):
     model = Process
+    slug_url_kwarg = 'process_slug'
 
 
 class ProcessList(PageLinksMixin, ListView):
@@ -101,6 +102,7 @@ class ProcessUpdate(CompanyContextMixin, ProcessGetObjectMixin, UpdateView):
 class ProcessNoteCreate(CreateView):
     form_class = ProcessNoteForm
     model = ProcessNote
+    template_name = 'crm/process_note_form.html'
 
 
 class SkillCreate(CreateView):

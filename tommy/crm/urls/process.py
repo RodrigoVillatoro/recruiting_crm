@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from ..views import ProcessCreateGeneral, ProcessList
+from ..views import ProcessCreateGeneral, ProcessList, ProcessNoteCreate
 
 
 urlpatterns = [
@@ -10,8 +10,13 @@ urlpatterns = [
         name='crm_process_list'
     ),
     url(
-        r'process/create/$',
+        r'^create/$',
         ProcessCreateGeneral.as_view(),
         name='crm_process_create_general'
+    ),
+    url(
+        r'^note/create/$',
+        ProcessNoteCreate.as_view(),
+        name='crm_process_note_create'
     ),
 ]

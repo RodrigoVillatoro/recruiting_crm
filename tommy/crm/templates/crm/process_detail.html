@@ -12,7 +12,7 @@
     <li><a href="{% url 'crm_process_note_create' %}">Add Note</a></li>
   </ul>
   <p>Company: <a href="{{ process.company.get_absolute_url }}">{{ process.company }}</a> </p>
-  <h3>Notes:</h3>
+  <h3>Actions:</h3>
   <ul>
     {% for process_note in process.process_notes.all %}
       <li>
@@ -20,7 +20,7 @@
         {{ process_note.description }}
       </li>
     {% empty %}
-      <li>No notes available.</li>
+      <li>No actions available.</li>
     {% endfor %}
   </ul>
 {% endblock %}

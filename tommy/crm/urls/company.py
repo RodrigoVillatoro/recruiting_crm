@@ -4,7 +4,7 @@ from django.conf.urls import url
 from ..views import (CompanyCreate, CompanyDelete, CompanyDetail, CompanyList,
                      CompanyUpdate, CompanyNoteCreate,
                      ProcessCreate, ProcessDelete, ProcessDetail,
-                     ProcessUpdate, ProcessNoteCreate)
+                     ProcessUpdate)
 
 urlpatterns = [
 
@@ -71,13 +71,5 @@ urlpatterns = [
         r'update/$',
         ProcessUpdate.as_view(),
         name='crm_process_update'
-    ),
-    url(
-        r'^(?P<company_slug>[\w\-]+)/'
-        r'(?P<process_slug>[\w\-]+)/'
-        r'action/'
-        r'create/$',
-        ProcessNoteCreate.as_view(),
-        name='crm_process_note_create'
     ),
 ]
