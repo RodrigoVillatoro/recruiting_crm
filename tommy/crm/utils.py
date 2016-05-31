@@ -1,4 +1,32 @@
 from django.core.exceptions import ValidationError
+from django.shortcuts import get_object_or_404
+
+from .models import Company, Process
+
+
+class CompanyContextMixin:
+    company_slug_url_kwarg = 'company_slug'
+    company_context_object_name = 'company'
+
+    def get_context_data(self, **kwargs):
+        company_slug = self.kwargs.get(self.company_slug_url_kwarg)
+        company = get_object_or_404(Company, slug__iexact=company_slug)
+        context = {
+            self.company_context_object_name: company
+        }
+        context.update(kwargs)
+        return super().get_context_data(**context)
+
+
+class ProcessGetObjectMixin:
+    def get_object(self, queryset=None):
+        company_slug = self.kwargs.get(self.company_slug_url_kwarg)
+        process_slug = self.kwargs.get(self.slug_url_kwarg)
+        return get_object_or_404(
+            Process,
+            slug__iexact=process_slug,
+            company__slug__iexact=company_slug,
+        )
 
 
 class PageLinksMixin:

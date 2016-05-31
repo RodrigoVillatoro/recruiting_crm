@@ -5,7 +5,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import PageLinksMixin
+from .utils import CompanyContextMixin, PageLinksMixin, ProcessGetObjectMixin
 
 
 class CompanyCreate(CreateView):
@@ -67,14 +67,20 @@ class ContactUpdate(UpdateView):
     template_name = 'crm/contact_form_update.html'
 
 
-class ProcessCreate(CreateView):
+class ProcessCreate(CompanyContextMixin, ProcessGetObjectMixin, CreateView):
     form_class = ProcessForm
     model = Process
 
 
-class ProcessDelete(DeleteView):
+class ProcessCreateGeneral(CreateView):
+    form_class = ProcessForm
+    model = Process
+
+
+class ProcessDelete(CompanyContextMixin, ProcessGetObjectMixin, DeleteView):
     model = Process
     success_url = reverse_lazy('crm_process_list')
+    slug_url_kwarg = 'process_slug'
 
 
 class ProcessDetail(DetailView):
@@ -85,10 +91,11 @@ class ProcessList(PageLinksMixin, ListView):
     model = Process
 
 
-class ProcessUpdate(UpdateView):
+class ProcessUpdate(CompanyContextMixin, ProcessGetObjectMixin, UpdateView):
     form_class = ProcessForm
     model = Process
     template_name = 'crm/process_form_update.html'
+    slug_url_kwarg = 'process_slug'
 
 
 class ProcessNoteCreate(CreateView):

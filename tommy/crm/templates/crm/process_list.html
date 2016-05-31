@@ -6,7 +6,7 @@
 
 {% block crm_content %}
   <h2>Processes</h2>
-  <a href="{% url 'crm_process_create' %}">Create Process</a>
+  <a href="{% url 'crm_process_create_general' %}">Create Process</a>
   <ul>
     {% for process in process_list %}
       <li>

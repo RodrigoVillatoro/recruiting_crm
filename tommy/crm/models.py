@@ -84,6 +84,10 @@ class Company(models.Model):
     def get_delete_url(self):
         return reverse('crm_company_delete', kwargs={'slug': self.slug})
 
+    def get_process_create_url(self):
+        return reverse(
+            'crm_process_create', kwargs={'company_slug': self.slug})
+
     def get_update_url(self):
         return reverse('crm_company_update', kwargs={'slug': self.slug})
 
@@ -201,13 +205,28 @@ class Process(models.Model):
         unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
-        return reverse('crm_process_detail', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_process_detail',
+            kwargs={
+                'company_slug': self.company.slug,
+                'process_slug': self.slug,
+            })
 
     def get_delete_url(self):
-        return reverse('crm_process_delete', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_process_delete',
+            kwargs={
+                'company_slug': self.company.slug,
+                'process_slug': self.slug,
+            })
 
     def get_update_url(self):
-        return reverse('crm_process_update', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_process_update',
+            kwargs={
+                'company_slug': self.company.slug,
+                'process_slug': self.slug
+            })
 
     def __str__(self):
         return '{}: {}'.format(self.company, self.title)
