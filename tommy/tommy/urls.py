@@ -36,3 +36,6 @@ urlpatterns = [
     url(r'^process/', include(process_urls)),
     url(r'^skill/', include(skill_urls))
 ]
+
+
+admin.site.site_header = 'Tommy'

@@ -4,17 +4,24 @@
   {{ block.super }} - Companies
 {% endblock %}
 
-{% block content %}
+{% block crm_content %}
   <h2>Companies</h2>
-  <a href="{% url 'crm_company_create' %}">Create Company</a>
-  <ul>
-    {% for company in company_list %}
-      <li>
-        <a href="{{ company.get_absolute_url }}">
-          {{ company.name }}</a>
-      </li>
-    {% empty %}
-      <li><em>No Companies Available</em></li>
-    {% endfor %}
-  </ul>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="list-group">
+        {% for company in company_list %}
+          <a href="{{ company.get_absolute_url }}" class="list-group-item">
+            {% if company.processes.count %}
+              <span class="badge">Jobs: {{ company.processes.count }}</span>
+            {% endif %}
+            <strong>{{ company.name }}</strong>
+            <small> - Rodrigo Villatoro</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a role="button" class="btn btn-primary" href="{% url 'crm_company_create' %}">Add Company</a>
+    </div>
+  </div>
 {% endblock %}

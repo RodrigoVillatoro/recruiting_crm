@@ -21,6 +21,8 @@ class CompanyForm(SlugCleanMixin, forms.ModelForm):
                 'name',
                 'industry',
                 'skills',
+                'status',
+                'slug',
             ),
             Fieldset(
                 'Location',
@@ -33,16 +35,19 @@ class CompanyForm(SlugCleanMixin, forms.ModelForm):
                 'Company Details',
                 'website',
                 'description',
-                'nubelo_id',
-                'nubelo_url',
-                'status',
+
             ),
             Fieldset(
                 'Other Info',
                 'legal_name',
                 'cif',
                 'fee',
-                'is_canonical_company'
+            ),
+            Fieldset(
+                'Nubelo',
+                'nubelo_id',
+                'nubelo_url',
+                'is_canonical_company',
             ),
         )
 
@@ -52,6 +57,13 @@ class CompanyForm(SlugCleanMixin, forms.ModelForm):
 
 
 class CompanyNoteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CompanyNoteForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = CompanyNote
         fields = '__all__'
@@ -64,6 +76,13 @@ class ContactForm(SlugCleanMixin, forms.ModelForm):
 
 
 class ProcessForm(SlugCleanMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = Process
         fields = '__all__'

@@ -6,71 +6,238 @@
 
 {% block content %}
   <article>
-    <h2>{{ company.name }}</h2>
-    <ul>
-      <li><a href="{{ company.get_update_url }}">Update</a></li>
-      <li><a href="{{ company.get_delete_url }}">Delete</a></li>
-      <li><a href="{% url 'crm_process_create' %}">Add Process</a></li>
-      <li><a href="{% url 'crm_contact_create' %}">Add Contact</a></li>
-      <li><a href="{% url 'crm_company_note_create' %}">Add Note</a></li>
-    </ul>
-    <dl>
-      <dt>Date Added</dt>
-      <dd>{{ company.timestamp|date:"F jS, Y" }}</dd>
-      <dt>Website</dt>
-      <dd>{{ company.website|urlize }}</dd>
-      <dt>Contact{{ company.contact.count|pluralize }}</dt>
-      {% for contact in company.contacts.all %}
-        <dd><a href="{{ contact.get_absolute_url }}">
-          {{ contact.get_full_name }}
-        </a></dd>
-      {% endfor %}
-      <dt>Skill{{ company.skills.count|pluralize }}</dt>
-      {% for skill in company.skills.all %}
-        <dd><a href="{{ skill.get_absolute_url }}">
-          {{ skill.name }}
-        </a></dd>
-      {% endfor %}
-    </dl>
-    {{ company.description|linebreaks }}
-    {% if company.processes.all %}
-      <section>
-        <h3>Processes</h3>
-        <ul>
-          {% for process in company.processes.all %}
-            <li>
-              <a href="{{ process.get_absolute_url }}">
-                {{ process.title }}</a>
-            </li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endif %}
-    <section>
-      <h3>Notes:</h3>
-      <ul>
-      {% for company_note in company.company_notes.all %}
-        <li>
-          {{ company_note.timestamp|date:'Y-m-d' }}:
-          {{ company_note.description }}
-        </li>
-      {% empty %}
-        <li>No notes available.</li>
-      {% endfor %}
-      </ul>
-    </section>
-{#        {% if startup.blog_posts.all %}#}
-{#            <section>#}
-{#              <h3>Blog Post{{ startup.blog_posts.all|pluralize }}</h3>#}
-{#              <ul>#}
-{#                {% for post in startup.blog_posts.all %}#}
-{#                  <li>#}
-{#                    <a href="">#}
-{#                      {{ post.title|title }}</a>#}
-{#                  </li>#}
-{#                {% endfor %}#}
-{#              </ul>#}
-{#            </section>#}
-{#        {% endif %}#}
+    <div class="row">
+      <div class="col-md-8">
+        <ol class="breadcrumb">
+          <li><a href="{% url 'crm_company_list' %}">Companies</a></li>
+          <li class="active">{{ company.name }}</li>
+        </ol>
+        <h2>{{ company.name }}</h2>
+        <section>
+          <p>{{ company.description|truncatewords_html:100 }}</p>
+        </section>
+        <section>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Open Jobs
+                <span class="small"><a href="{% url 'crm_process_create' %}">Add job</a></span>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                {% for process in company.processes.all %}
+                  <li>
+                    <a href="{{ process.get_absolute_url }}">{{ process.title }}</a>
+                  </li>
+                {% empty %}
+                  <li>No open processes</li>
+              {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Actions
+                  <span class="small"><a href="{% url 'crm_company_note_create' %}">Add Action</a></span>
+                </h3>
+              </div>
+              <div class="panel-body">
+                {% for company_note in company.company_notes.all %}
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      <h4>
+                        {{ company_note.action|title }}
+                        <span class="small">{{ company_note.timestamp|date }} by Rodrigo Villatoro</span>
+                      </h4>
+                      {{ company_note.description }}
+                    </div>
+                  </div>
+                {% empty %}
+                  <ul>
+                    <li>
+                      No actions taken
+                    </li>
+                  </ul>
+                {% endfor %}
+              </div>
+            </div>
+        </section>
+      </div>
+      <div class="col-md-4">
+        <section>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Company Info
+                <span class="small"><a href="{{ company.get_update_url }}">Update</a></span>
+              </h3>
+            </div>
+            <div class="panel-body">
+              <table>
+                <tr>
+                  <td>Account Manager:</td>
+                  <td>Rodrigo Villatoro</td>
+                </tr>
+                <tr>
+                  <td>Hiring Skills:</td>
+                  <td>{% for skill in company.skills.all %}
+                        <a href="{{ skill.get_absolute_url }}">
+                          {{ skill.name }}</a>{% if forloop.last %}{% else %}, {% endif %}
+                      {% endfor %}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Industry:</td>
+                  <td>{{ company.industry|title }}</td>
+                </tr>
+                <tr>
+                  <td>Date Added:</td>
+                  <td>{{ company.timestamp|date:"F jS, Y" }}</td>
+                </tr>
+                {% if company.website %}
+                  <tr>
+                    <td>Website:</td>
+                    <td>{{ company.website|urlize }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.legal_name %}
+                  <tr>
+                    <td>Legal Name:</td>
+                    <td>{{ company.legal_name }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.cif %}
+                  <tr>
+                    <td>CIF:</td>
+                    <td>{{ company.cif }}</td>
+                  </tr>
+                {% endif %}
+                <tr>
+                  <td>Country:</td>
+                  <td>{{ company.country|upper }}</td>
+                </tr>
+                <tr>
+                  <td>City:</td>
+                  <td>{{ company.city }}</td>
+                </tr>
+                {% if company.address %}
+                  <tr>
+                    <td>Address:</td>
+                    <td>{{ company.address }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.zip_code %}
+                  <tr>
+                    <td>Zip Code:</td>
+                    <td>{{ company.zip_code }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.fee %}
+                  <tr>
+                    <td>Fee:</td>
+                    <td>{{ company.fee }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.nubelo_id %}
+                  <tr>
+                    <td>Nubelo ID:</td>
+                    <td>{{ company.nubelo_id }}</td>
+                  </tr>
+                {% endif %}
+                {% if company.nubelo_url %}
+                  <tr>
+                    <td>Nubelo URL:</td>
+                    <td>{{ company.nubelo_url|urlize }}</td>
+                  </tr>
+                {% endif %}
+              </table>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Contacts
+                <span class="small"><a href="{% url 'crm_contact_create' %}">Add Contact</a></span>
+              </h3>
+            </div>
+            <div class="panel-body">
+              {% for contact in company.contacts.all %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                <h4>
+                  {{ contact.get_full_name }}
+                  {% if contact.is_primary_contact %}*{% endif %}
+                  <a class="small" href="{{ contact.get_absolute_url }}">Edit</a>
+                </h4>
+                <table>
+                  {% if contact.title %}
+                    <tr>
+                      <td>Title:</td>
+                      <td>{{ contact.title }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.email %}
+                    <tr>
+                      <td>Email:</td>
+                      <td>{{ contact.email }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.phone %}
+                    <tr>
+                      <td>Phone:</td>
+                      <td>{{ contact.phone }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.mobile %}
+                    <tr>
+                      <td>Mobile:</td>
+                      <td>{{ contact.mobile }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.country %}
+                    <tr>
+                      <td>Country:</td>
+                      <td>{{ contact.country|upper }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.country %}
+                    <tr>
+                      <td>City:</td>
+                      <td>{{ contact.city }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.address %}
+                    <tr>
+                      <td>Address:</td>
+                      <td>{{ contact.address }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if contact.zip_code %}
+                    <tr>
+                      <td>Zip Code:</td>
+                      <td>{{ contact.zip_code }}</td>
+                    </tr>
+                  {% endif %}
+                </table>
+                </div>
+                </div>
+              {% empty %}
+                <ul>
+                  <li>
+                    No contacts available
+                  </li>
+                </ul>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   </article>
 {% endblock %}

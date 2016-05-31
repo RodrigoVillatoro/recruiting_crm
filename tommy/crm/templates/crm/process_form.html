@@ -1,16 +1,22 @@
 {% extends parent_template|default:'crm/base_crm.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-  {{ block.super }} - Create Process
+  {{ block.super }} - Add Process
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div>
-      <form action="{% url 'crm_process_create' %}" method="post">
+  <h2>Add Job</h2>
+  <div class="row">
+    <div class="col-md-7">
+      <form action="{% url 'crm_process_create' %}" method="post" class="form-horizontal">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Process</button>
+        {% crispy form %}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-7">
+            <input class="btn btn-primary" type="submit" value="Add Job">
+          </div>
+        </div>
       </form>
     </div>
   </div>

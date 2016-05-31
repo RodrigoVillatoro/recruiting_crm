@@ -1,11 +1,11 @@
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
-                                  UpdateView, View)
+                                  ListView, UpdateView)
 
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import ObjectListMixin
+from .utils import PageLinksMixin
 
 
 class CompanyCreate(CreateView):
@@ -22,9 +22,8 @@ class CompanyDetail(DetailView):
     model = Company
 
 
-class CompanyList(ObjectListMixin, View):
+class CompanyList(PageLinksMixin, ListView):
     model = Company
-    template_name = 'crm/company_list.html'
 
 
 class CompanyUpdate(UpdateView):
@@ -36,6 +35,7 @@ class CompanyUpdate(UpdateView):
 class CompanyNoteCreate(CreateView):
     form_class = CompanyNoteForm
     model = CompanyNote
+    template_name = 'crm/company_note_form.html'
 
 
 class ContactCreate(CreateView):
@@ -48,13 +48,17 @@ class ContactDelete(DeleteView):
     success_url = reverse_lazy('crm_contact_list')
 
 
+class ContactModal(DetailView):
+    model = Contact
+    template_name = 'crm/contact_modal.html'
+
+
 class ContactDetail(DetailView):
     model = Contact
 
 
-class ContactList(ObjectListMixin, View):
+class ContactList(PageLinksMixin, ListView):
     model = Contact
-    template_name = 'crm/contact_list.html'
 
 
 class ContactUpdate(UpdateView):
@@ -77,9 +81,8 @@ class ProcessDetail(DetailView):
     model = Process
 
 
-class ProcessList(ObjectListMixin, View):
+class ProcessList(PageLinksMixin, ListView):
     model = Process
-    template_name = 'crm/process_list.html'
 
 
 class ProcessUpdate(UpdateView):
@@ -102,7 +105,6 @@ class SkillDetail(DetailView):
     model = Skill
 
 
-class SkillList(ObjectListMixin, View):
+class SkillList(PageLinksMixin, ListView):
     model = Skill
-    template_name = 'crm/skill_list.html'
 

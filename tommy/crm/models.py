@@ -38,10 +38,10 @@ class Company(models.Model):
         ('es', 'ES'),
     )
     STATUS_CHOICES = (
-        ('n/a', 'N/A'),
         ('contacted', 'Contacted'),
         ('accepted', 'Accepted'),
         ('declined', 'Declined'),
+        ('n/a', 'N/A'),
     )
     INDUSTRY_CHOICES = (
         ('internet', 'Internet'),
@@ -65,8 +65,7 @@ class Company(models.Model):
     fee = models.CharField(max_length=25, blank=True)
     nubelo_id = models.IntegerField(null=True, blank=True)
     nubelo_url = models.URLField(max_length=250, blank=True)
-    status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default='n/a')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     city = models.ForeignKey(City, related_name='companies')
@@ -141,7 +140,7 @@ class Contact(models.Model):
     # created_by = models.ForeignKey(User, related_name='created_contacts', db_index=True)
 
     class Meta:
-        ordering = ('email',)
+        ordering = ('-is_primary_contact',)
         unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
@@ -149,6 +148,9 @@ class Contact(models.Model):
 
     def get_delete_url(self):
         return reverse('crm_contact_delete', kwargs={'slug': self.slug})
+
+    def get_modal_url(self):
+        return reverse('crm_contact_modal', kwargs={'slug': self.slug})
 
     def get_update_url(self):
         return reverse('crm_contact_update', kwargs={'slug': self.slug})
@@ -188,7 +190,8 @@ class Process(models.Model):
     skills = models.ManyToManyField(Skill, related_name='processes')
     city = models.ForeignKey(City, related_name='processes')
     # created_by = models.ForeignKey(User, related_name='created_processes',
-    #                                db_index=True)
+    #
+    #                   db_index=True)
     # assigned_to = models.ForeignKey(User, related_name='assigned_processes')
     # fee (por defecto es el de la empresa)
     # assigned to (por defecto el owner del cliente)

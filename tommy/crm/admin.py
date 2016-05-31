@@ -9,7 +9,6 @@ class CompanyAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Contact)
 admin.site.register(Process)
