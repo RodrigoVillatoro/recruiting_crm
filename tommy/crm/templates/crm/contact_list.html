@@ -6,7 +6,7 @@
 
 {% block crm_content %}
   <h2>Contacts</h2>
-  <a href="{% url 'crm_contact_create' %}">Create Contact</a>
+  <a href="{% url 'crm_contact_create_general' %}">Create Contact</a>
   <ul>
     {% for contact in contact_list %}
       <li>

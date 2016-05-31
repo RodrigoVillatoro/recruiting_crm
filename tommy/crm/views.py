@@ -5,7 +5,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import CompanyContextMixin, PageLinksMixin, ProcessGetObjectMixin
+from .utils import (CompanyContextMixin, ContactGetObjectMixin, PageLinksMixin,
+                    ProcessGetObjectMixin)
 
 
 class CompanyCreate(CreateView):
@@ -32,42 +33,45 @@ class CompanyUpdate(UpdateView):
     template_name = 'crm/company_form_update.html'
 
 
-class CompanyNoteCreate(CreateView):
+class CompanyNoteCreate(CompanyContextMixin, CreateView):
     form_class = CompanyNoteForm
     model = CompanyNote
     template_name = 'crm/company_note_form.html'
 
 
-class ContactCreate(CreateView):
+class ContactCreate(CompanyContextMixin, CreateView):
     form_class = ContactForm
     model = Contact
 
 
-class ContactDelete(DeleteView):
+class ContactCreateGeneral(CreateView):
+    form_class = ContactForm
+    model = Contact
+
+
+class ContactDelete(CompanyContextMixin, ContactGetObjectMixin, DeleteView):
     model = Contact
     success_url = reverse_lazy('crm_contact_list')
+    slug_url_kwarg = 'contact_slug'
 
 
-class ContactModal(DetailView):
+class ContactDetail(CompanyContextMixin, ContactGetObjectMixin, DetailView):
     model = Contact
-    template_name = 'crm/contact_modal.html'
-
-
-class ContactDetail(DetailView):
-    model = Contact
+    slug_url_kwarg = 'contact_slug'
 
 
 class ContactList(PageLinksMixin, ListView):
     model = Contact
 
 
-class ContactUpdate(UpdateView):
+class ContactUpdate(CompanyContextMixin, ContactGetObjectMixin, UpdateView):
     form_class = ContactForm
     model = Contact
     template_name = 'crm/contact_form_update.html'
+    slug_url_kwarg = 'contact_slug'
 
 
-class ProcessCreate(CompanyContextMixin, ProcessGetObjectMixin, CreateView):
+class ProcessCreate(CompanyContextMixin, CreateView):
     form_class = ProcessForm
     model = Process
 

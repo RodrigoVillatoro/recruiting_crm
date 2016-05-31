@@ -42,7 +42,7 @@
               <div class="panel-heading">
                 <h3 class="panel-title">
                   Actions
-                  <span class="small"><a href="{% url 'crm_company_note_create' %}">Add Action</a></span>
+                  <span class="small"><a href="{{ company.get_company_note_create_url }}">Add Action</a></span>
                 </h3>
               </div>
               <div class="panel-body">
@@ -163,7 +163,7 @@
             <div class="panel-heading">
               <h3 class="panel-title">
                 Contacts
-                <span class="small"><a href="{% url 'crm_contact_create' %}">Add Contact</a></span>
+                <span class="small"><a href="{{ company.get_contact_create_url }}">Add Contact</a></span>
               </h3>
             </div>
             <div class="panel-body">

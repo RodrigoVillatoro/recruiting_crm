@@ -88,6 +88,14 @@ class Company(models.Model):
         return reverse(
             'crm_process_create', kwargs={'company_slug': self.slug})
 
+    def get_company_note_create_url(self):
+        return reverse(
+            'crm_company_note_create', kwargs={'company_slug': self.slug})
+
+    def get_contact_create_url(self):
+        return reverse(
+            'crm_contact_create', kwargs={'company_slug': self.slug})
+
     def get_update_url(self):
         return reverse('crm_company_update', kwargs={'slug': self.slug})
 
@@ -148,16 +156,28 @@ class Contact(models.Model):
         unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
-        return reverse('crm_contact_detail', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_contact_detail',
+            kwargs={
+                'company_slug': self.company.slug,
+                'contact_slug': self.slug,
+            })
 
     def get_delete_url(self):
-        return reverse('crm_contact_delete', kwargs={'slug': self.slug})
-
-    def get_modal_url(self):
-        return reverse('crm_contact_modal', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_contact_delete',
+            kwargs={
+                'company_slug': self.company.slug,
+                'contact_slug': self.slug,
+            })
 
     def get_update_url(self):
-        return reverse('crm_contact_update', kwargs={'slug': self.slug})
+        return reverse(
+            'crm_contact_update',
+            kwargs={
+                'company_slug': self.company.slug,
+                'contact_slug': self.slug,
+            })
 
     def get_full_name(self):
         return '{} {}'.format(self.first_name, self.last_name)

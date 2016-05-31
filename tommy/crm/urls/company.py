@@ -3,14 +3,13 @@ from django.conf.urls import url
 
 from ..views import (CompanyCreate, CompanyDelete, CompanyDetail, CompanyList,
                      CompanyUpdate, CompanyNoteCreate,
-                     ProcessCreate, ProcessDelete, ProcessDetail,
-                     ProcessUpdate)
+                     )
 
 urlpatterns = [
 
-    ###############
+    #################
     # COMPANY
-    ###############
+    #################
     url(
         r'^$',
         CompanyList.as_view(),
@@ -36,40 +35,20 @@ urlpatterns = [
         CompanyUpdate.as_view(),
         name='crm_company_update'
     ),
+
+    ##################
+    # COMPANY ACTION
+    ##################
     url(
-        r'^note/create/$',
+        r'^(?P<company_slug>[\w\-]+)/'
+        r'add-action/$',
         CompanyNoteCreate.as_view(),
         name='crm_company_note_create'
     ),
 
-    ###############
+    #################
     # JOB
-    ###############
-    url(
-        r'^(?P<company_slug>[\w\-]+)/'
-        r'process/'
-        r'create/$',
-        ProcessCreate.as_view(),
-        name='crm_process_create'
-    ),
-    url(
-        r'^(?P<company_slug>[\w\-]+)/'
-        r'(?P<process_slug>[\w\-]+)/$',
-        ProcessDetail.as_view(),
-        name='crm_process_detail'
-    ),
-    url(
-        r'^(?P<company_slug>[\w\-]+)/'
-        r'(?P<process_slug>[\w\-]+)/'
-        r'delete/$',
-        ProcessDelete.as_view(),
-        name='crm_process_delete'
-    ),
-    url(
-        r'^(?P<company_slug>[\w\-]+)/'
-        r'(?P<process_slug>[\w\-]+)/'
-        r'update/$',
-        ProcessUpdate.as_view(),
-        name='crm_process_update'
-    ),
+    #################
+
+
 ]

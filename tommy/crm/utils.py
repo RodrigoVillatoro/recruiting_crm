@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 
-from .models import Company, Process
+from .models import Company, Contact, Process
 
 
 class CompanyContextMixin:
@@ -16,6 +16,17 @@ class CompanyContextMixin:
         }
         context.update(kwargs)
         return super().get_context_data(**context)
+
+
+class ContactGetObjectMixin:
+    def get_object(self, queryset=None):
+        company_slug = self.kwargs.get(self.company_slug_url_kwarg)
+        contact_slug = self.kwargs.get(self.slug_url_kwarg)
+        return get_object_or_404(
+            Contact,
+            slug__iexact=contact_slug,
+            company__slug__iexact=company_slug,
+        )
 
 
 class ProcessGetObjectMixin:

@@ -9,7 +9,7 @@
   <h2>Add Action</h2>
   <div class="row">
     <div class="col-md-7">
-      <form action="{% url 'crm_company_note_create' %}" method="post" class="form-horizontal">
+      <form action="{{ company.get_company_note_create_url }}" method="post" class="form-horizontal">
         {% csrf_token %}
         {% crispy form %}
         <div class="form-group">

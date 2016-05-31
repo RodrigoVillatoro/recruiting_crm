@@ -31,10 +31,10 @@ urlpatterns = [
         )
     ),
     url(r'^admin/', admin.site.urls),
-    url(r'^company/', include(company_urls)),
-    url(r'^contact/', include(contact_urls)),
-    url(r'^process/', include(process_urls)),
-    url(r'^skill/', include(skill_urls))
+    url(r'^companies/', include(company_urls)),
+    url(r'^contacts/', include(contact_urls)),
+    url(r'^jobs/', include(process_urls)),
+    url(r'^skills/', include(skill_urls))
 ]
 
 
