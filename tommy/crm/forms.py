@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import HiddenInput
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, MultiField, Layout, Submit
@@ -67,9 +68,17 @@ class CompanyNoteForm(forms.ModelForm):
     class Meta:
         model = CompanyNote
         fields = '__all__'
+        widgets = {'company': HiddenInput()}
 
 
 class ContactForm(SlugCleanMixin, forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = '__all__'
+        widgets = {'company': HiddenInput()}
+
+
+class ContactFormGeneral(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Contact
         fields = '__all__'
@@ -86,6 +95,7 @@ class ProcessForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Process
         fields = '__all__'
+        widgets = {'company': HiddenInput()}
 
 
 class ProcessNoteForm(forms.ModelForm):

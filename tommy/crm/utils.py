@@ -9,11 +9,14 @@ class CompanyContextMixin:
     company_context_object_name = 'company'
 
     def get_context_data(self, **kwargs):
-        company_slug = self.kwargs.get(self.company_slug_url_kwarg)
-        company = get_object_or_404(Company, slug__iexact=company_slug)
-        context = {
-            self.company_context_object_name: company
-        }
+        if hasattr(self, 'company'):
+            context = {self.company_context_object_name: self.company}
+        else:
+            company_slug = self.kwargs.get(self.company_slug_url_kwarg)
+            company = get_object_or_404(Company, slug__iexact=company_slug)
+            context = {
+                self.company_context_object_name: company
+            }
         context.update(kwargs)
         return super().get_context_data(**context)
 
@@ -25,8 +28,16 @@ class ContactGetObjectMixin:
         return get_object_or_404(
             Contact,
             slug__iexact=contact_slug,
-            company__slug__iexact=company_slug,
-        )
+            company__slug__iexact=company_slug)
+
+
+class FetchCompanyMixin:
+    def get_initial(self):
+        company_slug = self.kwargs.get(self.company_slug_url_kwarg)
+        self.company = get_object_or_404(Company, slug__iexact=company_slug)
+        initial = {self.company_context_object_name: self.company}
+        initial.update(self.initial)
+        return initial
 
 
 class ProcessGetObjectMixin:
@@ -36,8 +47,7 @@ class ProcessGetObjectMixin:
         return get_object_or_404(
             Process,
             slug__iexact=process_slug,
-            company__slug__iexact=company_slug,
-        )
+            company__slug__iexact=company_slug)
 
 
 class PageLinksMixin:

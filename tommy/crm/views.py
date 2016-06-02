@@ -2,11 +2,12 @@ from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 
-from .forms import (CompanyForm, CompanyNoteForm, ContactForm, ProcessForm,
+from .forms import (CompanyForm, CompanyNoteForm, ContactForm,
+                    ContactFormGeneral, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import (CompanyContextMixin, ContactGetObjectMixin, PageLinksMixin,
-                    ProcessGetObjectMixin)
+from .utils import (CompanyContextMixin, ContactGetObjectMixin,
+                    FetchCompanyMixin, PageLinksMixin, ProcessGetObjectMixin)
 
 
 class CompanyCreate(CreateView):
@@ -33,19 +34,19 @@ class CompanyUpdate(UpdateView):
     template_name = 'crm/company_form_update.html'
 
 
-class CompanyNoteCreate(CompanyContextMixin, CreateView):
+class CompanyNoteCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
     form_class = CompanyNoteForm
     model = CompanyNote
     template_name = 'crm/company_note_form.html'
 
 
-class ContactCreate(CompanyContextMixin, CreateView):
+class ContactCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
     form_class = ContactForm
     model = Contact
 
 
 class ContactCreateGeneral(CreateView):
-    form_class = ContactForm
+    form_class = ContactFormGeneral
     model = Contact
 
 
@@ -71,7 +72,7 @@ class ContactUpdate(CompanyContextMixin, ContactGetObjectMixin, UpdateView):
     slug_url_kwarg = 'contact_slug'
 
 
-class ProcessCreate(CompanyContextMixin, CreateView):
+class ProcessCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
     form_class = ProcessForm
     model = Process
 
