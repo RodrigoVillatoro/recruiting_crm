@@ -1,7 +1,7 @@
 {% extends parent_template|default:"crm/base_crm.html" %}
 
 {% block title %}
-{{ block.super }} - Delete Process
+{{ block.super }} - Delete Job
 {% endblock %}
 
 {% block content %}
@@ -9,9 +9,9 @@
     <div>
       <form action="{{ process.get_delete_url }}" method="post">
         {% csrf_token %}
-        <p>Are you sure you want to delete process {{ process.title }}?</p>
+        <p>Are you sure you want to delete job {{ process.title }}?</p>
         <a href="{{ process.get_absolute_url }}">Cancel</a>
-        <button type="submit">Delete Contact</button>
+        <button type="submit">Delete Job</button>
       </form>
     </div>
   </div>

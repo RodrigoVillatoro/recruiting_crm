@@ -6,14 +6,19 @@
 
 {% block crm_content %}
   <h2>Contacts</h2>
-  <a href="{% url 'crm_contact_create_general' %}">Create Contact</a>
-  <ul>
-    {% for contact in contact_list %}
-      <li>
-        <a href="{{ contact.get_absolute_url }}">{{ contact.get_full_name }} ({{ contact.company }})</a>
-      </li>
-    {% empty %}
-      <li><em>No Contacts Available</em></li>
-    {% endfor %}
-  </ul>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="list-group">
+        {% for contact in contact_list %}
+          <a href="{{ contact.get_absolute_url }}" class="list-group-item">
+            <strong>{{ contact.get_full_name }}</strong>
+            <small> - {{ contact.company }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a role="button" class="btn btn-primary" href="{% url 'crm_contact_create_general' %}">Add Contact</a>
+    </div>
+  </div>
 {% endblock %}

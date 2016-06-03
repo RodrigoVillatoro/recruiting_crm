@@ -17,11 +17,6 @@ urlpatterns = [
         name='crm_process_create_general'
     ),
     url(
-        r'^note/create/$',
-        ProcessNoteCreate.as_view(),
-        name='crm_process_note_create'
-    ),
-    url(
         r'^(?P<company_slug>[\w\-]+)/'
         r'add-job/$',
         ProcessCreate.as_view(),
@@ -47,4 +42,12 @@ urlpatterns = [
         ProcessUpdate.as_view(),
         name='crm_process_update'
     ),
+    url(
+        r'^(?P<company_slug>[\w\-]+)/'
+        r'(?P<process_slug>[\w\-]+)/'
+        r'add-action/$',
+        ProcessNoteCreate.as_view(),
+        name='crm_process_note_create'
+    ),
+
 ]

@@ -240,6 +240,14 @@ class Process(models.Model):
                 'process_slug': self.slug,
             })
 
+    def get_process_note_create_url(self):
+        return reverse(
+            'crm_process_note_create',
+            kwargs={
+                'company_slug': self.company.slug,
+                'process_slug': self.slug,
+            })
+
     def get_update_url(self):
         return reverse(
             'crm_process_update',

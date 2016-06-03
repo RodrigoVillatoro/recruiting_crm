@@ -1,17 +1,24 @@
 {% extends parent_template|default:'crm/base_crm.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-  {{ block.super }} - Create Note
+  {{ block.super }} - Add Action
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div>
-      <form action="{% url 'crm_process_note_create' %}" method="post">
+  <h2>Add Action</h2>
+  <div class="row">
+    <div class="col-md-7">
+      <form action="{{ process.get_process_note_create_url }}" method="post" class="form-horizontal">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Note</button>
+        {% crispy form %}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-7">
+            <input class="btn btn-primary" type="submit" value="Add Action">
+          </div>
+        </div>
       </form>
     </div>
   </div>
 {% endblock %}
+

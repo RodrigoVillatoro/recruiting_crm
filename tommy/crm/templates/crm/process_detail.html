@@ -7,9 +7,9 @@
 {% block content %}
   <h2>{{ process.title }}</h2>
   <ul>
-    <li><a href="{{ process.get_update_url }}">Update</a></li>
+    <li><a href="{{ process.get_update_url }}">Edit</a></li>
     <li><a href="{{ process.get_delete_url }}">Delete</a></li>
-    <li><a href="{% url 'crm_process_note_create' %}">Add Note</a></li>
+    <li><a href="{{ process.get_process_note_create_url }}">Add Action</a></li>
   </ul>
   <p>Company: <a href="{{ process.company.get_absolute_url }}">{{ process.company }}</a> </p>
   <h3>Actions:</h3>

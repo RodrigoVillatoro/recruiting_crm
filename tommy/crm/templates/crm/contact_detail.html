@@ -7,7 +7,7 @@
 {% block content %}
   <h2>{{ contact.get_full_name }}</h2>
   <ul>
-    <li><a href="{{ contact.get_update_url }}">Update</a></li>
+    <li><a href="{{ contact.get_update_url }}">Edit</a></li>
     <li><a href="{{ contact.get_delete_url }}">Delete</a></li>
   </ul>
   <p>Company: <a href="{{ contact.company.get_absolute_url }}">{{ contact.company }}</a></p>

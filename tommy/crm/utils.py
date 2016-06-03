@@ -31,11 +31,35 @@ class ContactGetObjectMixin:
             company__slug__iexact=company_slug)
 
 
-class FetchCompanyMixin:
+class CompanyInitialMixin:
     def get_initial(self):
         company_slug = self.kwargs.get(self.company_slug_url_kwarg)
         self.company = get_object_or_404(Company, slug__iexact=company_slug)
         initial = {self.company_context_object_name: self.company}
+        initial.update(self.initial)
+        return initial
+
+
+class ProcessContextMixin:
+    process_slug_url_kwarg = 'process_slug'
+    process_context_object_name = 'process'
+
+    def get_context_data(self, **kwargs):
+        if hasattr(self, 'process'):
+            context = {self.process_context_object_name: self.process}
+        else:
+            process_slug = self.kwargs.get(self.process_slug_url_kwarg)
+            process = get_object_or_404(Process, slug__iexact=process_slug)
+            context = {self.process_context_object_name: process}
+        context.update(kwargs)
+        return super().get_context_data(**context)
+
+
+class ProcessInitialMixin:
+    def get_initial(self):
+        process_slug = self.kwargs.get(self.process_slug_url_kwarg)
+        self.process = get_object_or_404(Process, slug__iexact=process_slug)
+        initial = {self.process_context_object_name: self.process}
         initial.update(self.initial)
         return initial
 

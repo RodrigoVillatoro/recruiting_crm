@@ -6,15 +6,21 @@
 
 {% block crm_content %}
   <h2>Skills</h2>
-  <a href="{% url 'crm_skill_create' %}">Create Skill</a>
-  <ul>
-    {% for skill in skill_list %}
-      <li>
-        <a href="{{ skill.get_absolute_url }}">
-          {{ skill.name }}</a>
-      </li>
-    {% empty %}
-      <li><em>No Skills Available</em></li>
-    {% endfor %}
-  </ul>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="list-group">
+        {% for skill in skill_list %}
+          <a href="{{ skill.get_absolute_url }}" class="list-group-item">
+            {% if skill.processes.count %}
+              <span class="badge">Jobs: {{ skill.processes.count }}</span>
+            {% endif %}
+            <strong>{{ skill.name }}</strong>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a role="button" class="btn btn-primary" href="{% url 'crm_skill_create' %}">Add Skill</a>
+    </div>
+  </div>
 {% endblock %}

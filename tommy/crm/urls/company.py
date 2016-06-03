@@ -46,9 +46,4 @@ urlpatterns = [
         name='crm_company_note_create'
     ),
 
-    #################
-    # JOB
-    #################
-
-
 ]

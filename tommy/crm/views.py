@@ -6,8 +6,10 @@ from .forms import (CompanyForm, CompanyNoteForm, ContactForm,
                     ContactFormGeneral, ProcessForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import (CompanyContextMixin, ContactGetObjectMixin,
-                    FetchCompanyMixin, PageLinksMixin, ProcessGetObjectMixin)
+from .utils import (CompanyContextMixin, CompanyInitialMixin,
+                    ContactGetObjectMixin, ProcessContextMixin,
+                    ProcessInitialMixin, ProcessGetObjectMixin,
+                    PageLinksMixin)
 
 
 class CompanyCreate(CreateView):
@@ -34,13 +36,14 @@ class CompanyUpdate(UpdateView):
     template_name = 'crm/company_form_update.html'
 
 
-class CompanyNoteCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
+class CompanyNoteCreate(CompanyContextMixin, CompanyInitialMixin,
+                        CreateView):
     form_class = CompanyNoteForm
     model = CompanyNote
     template_name = 'crm/company_note_form.html'
 
 
-class ContactCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
+class ContactCreate(CompanyContextMixin, CompanyInitialMixin, CreateView):
     form_class = ContactForm
     model = Contact
 
@@ -72,7 +75,7 @@ class ContactUpdate(CompanyContextMixin, ContactGetObjectMixin, UpdateView):
     slug_url_kwarg = 'contact_slug'
 
 
-class ProcessCreate(CompanyContextMixin, FetchCompanyMixin, CreateView):
+class ProcessCreate(CompanyContextMixin, CompanyInitialMixin, CreateView):
     form_class = ProcessForm
     model = Process
 
@@ -104,7 +107,7 @@ class ProcessUpdate(CompanyContextMixin, ProcessGetObjectMixin, UpdateView):
     slug_url_kwarg = 'process_slug'
 
 
-class ProcessNoteCreate(CreateView):
+class ProcessNoteCreate(ProcessContextMixin, ProcessInitialMixin, CreateView):
     form_class = ProcessNoteForm
     model = ProcessNote
     template_name = 'crm/process_note_form.html'

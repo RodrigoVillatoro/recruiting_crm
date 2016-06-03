@@ -72,6 +72,13 @@ class CompanyNoteForm(forms.ModelForm):
 
 
 class ContactForm(SlugCleanMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = Contact
         fields = '__all__'
@@ -99,12 +106,27 @@ class ProcessForm(SlugCleanMixin, forms.ModelForm):
 
 
 class ProcessNoteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessNoteForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = ProcessNote
         fields = '__all__'
+        widgets = {'process': HiddenInput()}
 
 
 class SkillForm(SlugCleanMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SkillForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = Skill
         fields = '__all__'

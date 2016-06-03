@@ -4,18 +4,22 @@
   {{ block.super }} - Processes
 {% endblock %}
 
+
 {% block crm_content %}
-  <h2>Processes</h2>
-  <a href="{% url 'crm_process_create_general' %}">Create Process</a>
-  <ul>
-    {% for process in process_list %}
-      <li>
-        <a href="{{ process.get_absolute_url }}">
-          {{ process.company }}: {{ process.title }}
-        </a>
-      </li>
-    {% empty %}
-      <li><em>No Processes Available</em></li>
-    {% endfor %}
-  </ul>
+  <h2>Jobs</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="list-group">
+        {% for process in process_list %}
+          <a href="{{ process.get_absolute_url }}" class="list-group-item">
+            <strong>{{ process.title }}</strong>
+            <small> - {{ process.company }}</small>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <a role="button" class="btn btn-primary" href="{% url 'crm_process_create_general' %}">Add Job</a>
+    </div>
+  </div>
 {% endblock %}

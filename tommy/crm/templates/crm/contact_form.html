@@ -1,17 +1,25 @@
 {% extends parent_template|default:'crm/base_crm.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
-  {{ block.super }} - Create Contact
+  {{ block.super }} - Add Contact
 {% endblock %}
 
+
 {% block content %}
-  <div>
-    <div>
-      <form action="{{ company.get_contact_create_url }}" method="post">
+  <h2>Add Contact</h2>
+  <div class="row">
+    <div class="col-md-7">
+      <form action="{{ company.get_contact_create_url }}" method="post" class="form-horizontal">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Contact</button>
+        {% crispy form %}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-7">
+            <input class="btn btn-primary" type="submit" value="Add Contact">
+          </div>
+        </div>
       </form>
     </div>
   </div>
 {% endblock %}
+
