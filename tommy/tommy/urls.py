@@ -17,10 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import RedirectView
 
-from crm.urls import (company as company_urls,
-                      contact as contact_urls,
-                      process as process_urls,
-                      skill as skill_urls)
+from crm.urls import (company as company_urls, contact as contact_urls,
+                      process as process_urls, skill as skill_urls)
+from user import urls as user_urls
 
 urlpatterns = [
     url(
@@ -34,7 +33,8 @@ urlpatterns = [
     url(r'^companies/', include(company_urls)),
     url(r'^contacts/', include(contact_urls)),
     url(r'^jobs/', include(process_urls)),
-    url(r'^skills/', include(skill_urls))
+    url(r'^skills/', include(skill_urls)),
+    url(r'^user/', include(user_urls, app_name='user', namespace='dj-auth')),
 ]
 
 

@@ -3,7 +3,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 
 from .forms import (CompanyForm, CompanyNoteForm, ContactForm,
-                    ContactFormGeneral, ProcessForm,
+                    ContactFormGeneral, ProcessForm, ProcessFormGeneral,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
 from .utils import (CompanyContextMixin, CompanyInitialMixin,
@@ -81,7 +81,7 @@ class ProcessCreate(CompanyContextMixin, CompanyInitialMixin, CreateView):
 
 
 class ProcessCreateGeneral(CreateView):
-    form_class = ProcessForm
+    form_class = ProcessFormGeneral
     model = Process
 
 

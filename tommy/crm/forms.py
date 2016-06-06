@@ -105,6 +105,12 @@ class ProcessForm(SlugCleanMixin, forms.ModelForm):
         widgets = {'company': HiddenInput()}
 
 
+class ProcessFormGeneral(SlugCleanMixin, forms.ModelForm):
+    class Meta:
+        model = Process
+        fields = '__all__'
+
+
 class ProcessNoteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProcessNoteForm, self).__init__(*args, **kwargs)
