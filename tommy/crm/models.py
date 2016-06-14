@@ -1,6 +1,6 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-# from django.contrib.auth.models import User
 
 
 class Skill(models.Model):
@@ -70,9 +70,14 @@ class Company(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     city = models.ForeignKey(City, related_name='companies')
     skills = models.ManyToManyField(Skill, related_name='companies')
-    # created_by = models.ForeignKey(User, related_name='created_companies', db_index=True)
-    # owner = models.ForeignKey(User, related_name='owners', default=created_by)
-    # assigned_to = models.ForeignKey(User, related_name='assigned_companies')
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='created_companies',
+        db_index=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='owners')
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='assigned_companies',
+        blank=True)
 
     class Meta:
         ordering = ('-timestamp',)
@@ -122,7 +127,9 @@ class CompanyNote(models.Model):
         upload_to='uploads/notes/companies/%Y/%m/%d/', blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='company_notes')
-    # created_by = models.ForeignKey(User, related_name='created_c_notes', db_index=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='created_company_notes',
+        db_index=True)
 
     class Meta:
         ordering = ('-timestamp',)
@@ -149,7 +156,9 @@ class Contact(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='contacts')
     city = models.ForeignKey(City, related_name='contacts')
-    # created_by = models.ForeignKey(User, related_name='created_contacts', db_index=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='created_contacts',
+        db_index=True)
 
     class Meta:
         ordering = ('-is_primary_contact',)
@@ -213,10 +222,11 @@ class Process(models.Model):
     company = models.ForeignKey(Company, related_name='processes')
     skills = models.ManyToManyField(Skill, related_name='processes')
     city = models.ForeignKey(City, related_name='processes')
-    # created_by = models.ForeignKey(User, related_name='created_processes',
-    #
-    #                   db_index=True)
-    # assigned_to = models.ForeignKey(User, related_name='assigned_processes')
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='created_processes',
+        db_index=True)
+    assigned_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='assigned_processes')
     # fee (por defecto es el de la empresa)
     # assigned to (por defecto el owner del cliente)
 
@@ -278,7 +288,9 @@ class ProcessNote(models.Model):
     document = models.FileField(
         upload_to='uploads/notes/process/%Y/%m/%d/', blank=True)
     process = models.ForeignKey(Process, related_name='process_notes')
-    # created_by = models.ForeignKey(User, related_name='created_p_notes', db_index=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='created_job_notes',
+        db_index=True)
 
     class Meta:
         ordering = ('-timestamp',)

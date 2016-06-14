@@ -15,7 +15,7 @@
               <span class="badge">Jobs: {{ company.processes.count }}</span>
             {% endif %}
             <strong>{{ company.name }}</strong>
-            <small> - Rodrigo Villatoro</small>
+            <small> - {{ company.created_by.get_full_name|title }} </small>
           </a>
         {% endfor %}
       </div>

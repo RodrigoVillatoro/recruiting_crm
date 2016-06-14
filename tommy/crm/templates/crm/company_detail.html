@@ -51,7 +51,7 @@
                     <div class="panel-body">
                       <h4>
                         {{ company_note.action|title }}
-                        <span class="small">{{ company_note.timestamp|date }} by Rodrigo Villatoro</span>
+                        <span class="small">{{ company_note.timestamp|date }} by {{ company_note.created_by.get_full_name|title }}</span>
                       </h4>
                       {{ company_note.description }}
                     </div>
@@ -79,8 +79,8 @@
             <div class="panel-body">
               <table>
                 <tr>
-                  <td>Acc. Owner:</td>
-                  <td>Rodrigo Villatoro</td>
+                  <td>Owner:</td>
+                  <td>{{ company.owner.get_full_name|title }}</td>
                 </tr>
                 <tr>
                   <td>Hiring Skills:</td>
@@ -101,7 +101,7 @@
                 {% if company.website %}
                   <tr>
                     <td>Website:</td>
-                    <td>{{ company.website|urlize }}</td>
+                    <td><a href="{{ company.website }}">Link</a></td>
                   </tr>
                 {% endif %}
                 {% if company.legal_name %}
@@ -151,7 +151,7 @@
                 {% if company.nubelo_url %}
                   <tr>
                     <td>Nubelo URL:</td>
-                    <td>{{ company.nubelo_url|urlize }}</td>
+                    <td><a href="{{ company.nubelo_url }}">Link</a></td>
                   </tr>
                 {% endif %}
               </table>
@@ -171,7 +171,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                 <h4>
-                  {{ contact.get_full_name }}
+                  {{ contact.get_full_name|title }}
                   {% if contact.is_primary_contact %}*{% endif %}
                   <a class="small" href="{{ contact.get_absolute_url }}">Details</a>
                 </h4>

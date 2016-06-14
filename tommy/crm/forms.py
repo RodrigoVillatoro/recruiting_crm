@@ -6,10 +6,10 @@ from crispy_forms.layout import ButtonHolder, Fieldset, MultiField, Layout, Subm
 from crispy_forms.bootstrap import TabHolder, Tab
 
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
-from .utils import SlugCleanMixin
+from .utils import CreatedByMixin, SlugCleanMixin
 
 
-class CompanyForm(SlugCleanMixin, forms.ModelForm):
+class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CompanyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -54,10 +54,10 @@ class CompanyForm(SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Company
-        fields = '__all__'
+        exclude = ('created_by', 'assigned_to', 'owner')
 
 
-class CompanyNoteForm(forms.ModelForm):
+class CompanyNoteForm(CreatedByMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CompanyNoteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -67,11 +67,11 @@ class CompanyNoteForm(forms.ModelForm):
 
     class Meta:
         model = CompanyNote
-        fields = '__all__'
+        exclude = ('created_by', )
         widgets = {'company': HiddenInput()}
 
 
-class ContactForm(SlugCleanMixin, forms.ModelForm):
+class ContactForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -81,17 +81,17 @@ class ContactForm(SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Contact
-        fields = '__all__'
+        exclude = ('created_by',)
         widgets = {'company': HiddenInput()}
 
 
-class ContactFormGeneral(SlugCleanMixin, forms.ModelForm):
+class ContactFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Contact
-        fields = '__all__'
+        exclude = ('created_by',)
 
 
-class ProcessForm(SlugCleanMixin, forms.ModelForm):
+class ProcessForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProcessForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -101,17 +101,17 @@ class ProcessForm(SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Process
-        fields = '__all__'
+        exclude = ('created_by',)
         widgets = {'company': HiddenInput()}
 
 
-class ProcessFormGeneral(SlugCleanMixin, forms.ModelForm):
+class ProcessFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = Process
-        fields = '__all__'
+        exclude = ('created_by',)
 
 
-class ProcessNoteForm(forms.ModelForm):
+class ProcessNoteForm(CreatedByMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProcessNoteForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -121,7 +121,7 @@ class ProcessNoteForm(forms.ModelForm):
 
     class Meta:
         model = ProcessNote
-        fields = '__all__'
+        exclude = ('created_by',)
         widgets = {'process': HiddenInput()}
 
 

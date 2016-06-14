@@ -1,4 +1,6 @@
+from django.contrib.auth import get_user
 from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
 from .models import Company, Contact, Process
@@ -104,7 +106,7 @@ class PageLinksMixin:
 
 class SlugCleanMixin:
     """
-        Mixin class for slug cleaning method.
+    Mixin class for slug cleaning method.
     """
 
     def clean_slug(self):
@@ -112,3 +114,29 @@ class SlugCleanMixin:
         if new_slug == 'create' or new_slug == 'update':
             raise ValidationError('Slug may not be "{}".'.format(new_slug))
         return new_slug
+
+
+class CreatedByMixin:
+    """
+    Mixin class to register the user that made a specific action.
+    To be used in Forms.
+    """
+    def save(self, request, commit=True):
+        obj = super().save(commit=False)
+        if not obj.pk:
+            current_user = get_user(request)
+            obj.created_by = current_user
+            if hasattr(obj.__class__, 'owner'):
+                obj.owner = current_user
+            if hasattr(obj.__class__, 'assigned_to'):
+                obj.assigned_to = current_user
+        if commit:
+            obj.save()
+            self.save_m2m()
+        return obj
+
+
+class CreatedByFormValidMixin:
+    def form_valid(self, form):
+        self.object = form.save(self.request)
+        return HttpResponseRedirect(self.get_success_url())

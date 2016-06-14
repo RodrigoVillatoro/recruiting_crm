@@ -8,13 +8,13 @@ from .forms import (CompanyForm, CompanyNoteForm, ContactForm,
                     ProcessNoteForm, SkillForm)
 from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
 from .utils import (CompanyContextMixin, CompanyInitialMixin,
-                    ContactGetObjectMixin, ProcessContextMixin,
-                    ProcessInitialMixin, ProcessGetObjectMixin,
-                    PageLinksMixin)
+                    ContactGetObjectMixin, CreatedByFormValidMixin,
+                    ProcessContextMixin, ProcessInitialMixin,
+                    ProcessGetObjectMixin, PageLinksMixin)
 
 
 @class_login_required
-class CompanyCreate(CreateView):
+class CompanyCreate(CreatedByFormValidMixin, CreateView):
     form_class = CompanyForm
     model = Company
 
@@ -36,28 +36,29 @@ class CompanyList(PageLinksMixin, ListView):
 
 
 @class_login_required
-class CompanyUpdate(UpdateView):
+class CompanyUpdate(CreatedByFormValidMixin, UpdateView):
     form_class = CompanyForm
     model = Company
     template_name = 'crm/company_form_update.html'
 
 
 @class_login_required
-class CompanyNoteCreate(CompanyContextMixin, CompanyInitialMixin,
-                        CreateView):
+class CompanyNoteCreate(CreatedByFormValidMixin, CompanyContextMixin,
+                        CompanyInitialMixin, CreateView):
     form_class = CompanyNoteForm
     model = CompanyNote
     template_name = 'crm/company_note_form.html'
 
 
 @class_login_required
-class ContactCreate(CompanyContextMixin, CompanyInitialMixin, CreateView):
+class ContactCreate(CreatedByFormValidMixin, CompanyContextMixin,
+                    CompanyInitialMixin, CreateView):
     form_class = ContactForm
     model = Contact
 
 
 @class_login_required
-class ContactCreateGeneral(CreateView):
+class ContactCreateGeneral(CreatedByFormValidMixin, CreateView):
     form_class = ContactFormGeneral
     model = Contact
 
@@ -81,7 +82,8 @@ class ContactList(PageLinksMixin, ListView):
 
 
 @class_login_required
-class ContactUpdate(CompanyContextMixin, ContactGetObjectMixin, UpdateView):
+class ContactUpdate(CreatedByFormValidMixin, CompanyContextMixin,
+                    ContactGetObjectMixin, UpdateView):
     form_class = ContactForm
     model = Contact
     template_name = 'crm/contact_form_update.html'
@@ -89,13 +91,14 @@ class ContactUpdate(CompanyContextMixin, ContactGetObjectMixin, UpdateView):
 
 
 @class_login_required
-class ProcessCreate(CompanyContextMixin, CompanyInitialMixin, CreateView):
+class ProcessCreate(CreatedByFormValidMixin, CompanyContextMixin,
+                    CompanyInitialMixin, CreateView):
     form_class = ProcessForm
     model = Process
 
 
 @class_login_required
-class ProcessCreateGeneral(CreateView):
+class ProcessCreateGeneral(CreatedByFormValidMixin, CreateView):
     form_class = ProcessFormGeneral
     model = Process
 
@@ -119,7 +122,8 @@ class ProcessList(PageLinksMixin, ListView):
 
 
 @class_login_required
-class ProcessUpdate(CompanyContextMixin, ProcessGetObjectMixin, UpdateView):
+class ProcessUpdate(CreatedByFormValidMixin, CompanyContextMixin,
+                    ProcessGetObjectMixin, UpdateView):
     form_class = ProcessForm
     model = Process
     template_name = 'crm/process_form_update.html'
@@ -127,7 +131,8 @@ class ProcessUpdate(CompanyContextMixin, ProcessGetObjectMixin, UpdateView):
 
 
 @class_login_required
-class ProcessNoteCreate(ProcessContextMixin, ProcessInitialMixin, CreateView):
+class ProcessNoteCreate(CreatedByFormValidMixin, ProcessContextMixin,
+                        ProcessInitialMixin, CreateView):
     form_class = ProcessNoteForm
     model = ProcessNote
     template_name = 'crm/process_note_form.html'
