@@ -6,6 +6,9 @@ from django.db import models
 class Industry(models.Model):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=31, db_index=True)
@@ -25,6 +28,9 @@ class Country(models.Model):
     country_code = models.CharField(max_length=2, primary_key=True)
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class City(models.Model):
     geonameid = models.IntegerField(primary_key=True)
@@ -36,10 +42,10 @@ class City(models.Model):
     population = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ('name', 'country_code')
+        ordering = ('name', 'country')
 
     def __str__(self):
-        return '{}, {}'.format(self.name, self.country_code.upper())
+        return '{}'.format(self.name)
 
 
 class Company(models.Model):

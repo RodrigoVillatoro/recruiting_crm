@@ -48,7 +48,7 @@ class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
                 'Nubelo',
                 'nubelo_id',
                 'nubelo_url',
-                'is_canonical_company',
+                'official_company',
             ),
         )
 
