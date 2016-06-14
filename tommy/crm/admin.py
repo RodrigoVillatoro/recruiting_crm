@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Company, Contact, Process, Skill
+from .models import Company, Contact, Job, Skill
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -11,5 +11,5 @@ class CompanyAdmin(admin.ModelAdmin):
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Contact)
-admin.site.register(Process)
+admin.site.register(Job)
 admin.site.register(Skill)

@@ -3,6 +3,10 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
+class Industry(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Skill(models.Model):
     name = models.CharField(max_length=31, db_index=True)
     slug = models.SlugField(max_length=31, unique=True)
@@ -17,13 +21,18 @@ class Skill(models.Model):
         return self.name
 
 
+class Country(models.Model):
+    country_code = models.CharField(max_length=2, primary_key=True)
+    name = models.CharField(max_length=100)
+
+
 class City(models.Model):
     geonameid = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=100, db_index=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     feature_code = models.CharField(max_length=15)
-    country_code = models.CharField(max_length=2, db_index=True)
+    country = models.ForeignKey(Country, related_name='cities')
     population = models.IntegerField(default=0)
 
     class Meta:
@@ -34,33 +43,23 @@ class City(models.Model):
 
 
 class Company(models.Model):
-    COUNTRY_CHOICES = (
-        ('es', 'ES'),
-    )
     STATUS_CHOICES = (
         ('contacted', 'Contacted'),
         ('accepted', 'Accepted'),
         ('declined', 'Declined'),
         ('n/a', 'N/A'),
     )
-    INDUSTRY_CHOICES = (
-        ('internet', 'Internet'),
-        ('gaming', 'Gaming'),
-        ('other', 'Other')
-    )
     name = models.CharField(max_length=100, db_index=True)
     legal_name = models.CharField(max_length=100, blank=True)
     cif = models.CharField(max_length=25, blank=True)
     website = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    industry = models.CharField(max_length=15, choices=INDUSTRY_CHOICES)
-    country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
     address = models.CharField(max_length=100, blank=True)
     zip_code = models.CharField(max_length=10, blank=True)
     slug = models.SlugField(max_length=250, unique=True)
-    is_canonical_company = models.BooleanField(
+    official_company = models.BooleanField(
         default=True,
-        help_text='Official company, in case of duplicates',
+        help_text='Official company in Nubelo, in case of duplicates',
         blank=True)
     fee = models.CharField(max_length=25, blank=True)
     nubelo_id = models.IntegerField(null=True, blank=True)
@@ -68,13 +67,15 @@ class Company(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES)
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+    country = models.ForeignKey(Country, related_name='companies')
     city = models.ForeignKey(City, related_name='companies')
+    industry = models.ForeignKey(Industry, related_name='companies')
     skills = models.ManyToManyField(Skill, related_name='companies')
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='created_companies',
         db_index=True)
     owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='owners')
+        settings.AUTH_USER_MODEL, related_name='owned_companies')
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='assigned_companies',
         blank=True)
@@ -128,7 +129,7 @@ class CompanyAction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='company_actions')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_company_actions',
+        settings.AUTH_USER_MODEL, related_name='company_actions',
         db_index=True)
 
     class Meta:
@@ -148,16 +149,16 @@ class Contact(models.Model):
     email = models.EmailField(max_length=250, db_index=True)
     phone = models.CharField(max_length=25, blank=True)
     mobile = models.CharField(max_length=25, blank=True)
-    country = models.CharField(max_length=2)
     address = models.CharField(max_length=100, blank=True)
     zip_code = models.CharField(max_length=10, blank=True)
     slug = models.SlugField(max_length=250, unique=True)
     is_primary_contact = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='contacts')
+    country = models.ForeignKey(Country, related_name='contacts')
     city = models.ForeignKey(City, related_name='contacts')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_contacts',
+        settings.AUTH_USER_MODEL, related_name='contacts',
         db_index=True)
 
     class Meta:
@@ -289,7 +290,7 @@ class JobAction(models.Model):
         upload_to='uploads/actions/job/%Y/%m/%d/', blank=True)
     job = models.ForeignKey(Job, related_name='job_actions')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_job_actions',
+        settings.AUTH_USER_MODEL, related_name='job_actions',
         db_index=True)
 
     class Meta:

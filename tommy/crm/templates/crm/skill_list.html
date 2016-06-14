@@ -11,8 +11,8 @@
       <div class="list-group">
         {% for skill in skill_list %}
           <a href="{{ skill.get_absolute_url }}" class="list-group-item">
-            {% if skill.processes.count %}
-              <span class="badge">Jobs: {{ skill.processes.count }}</span>
+            {% if skill.jobs.count %}
+              <span class="badge">Jobs: {{ skill.jobs.count }}</span>
             {% endif %}
             <strong>{{ skill.name }}</strong>
           </a>

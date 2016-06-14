@@ -9,7 +9,7 @@
   <h2>Add Job <small>{{ company }}</small></h2>
   <div class="row">
     <div class="col-md-7">
-      <form action="{% url 'crm_process_create_general' %}" method="post" class="form-horizontal">
+      <form action="{% url 'crm_job_create_general' %}" method="post" class="form-horizontal">
         {% csrf_token %}
         {% crispy form %}
         <div class="form-group">

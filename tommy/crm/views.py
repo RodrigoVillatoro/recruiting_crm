@@ -3,14 +3,14 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 
 from user.decorators import class_login_required
-from .forms import (CompanyForm, CompanyNoteForm, ContactForm,
-                    ContactFormGeneral, ProcessForm, ProcessFormGeneral,
-                    ProcessNoteForm, SkillForm)
-from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
+from .forms import (CompanyForm, CompanyActionForm, ContactForm,
+                    ContactFormGeneral, JobForm, JobFormGeneral,
+                    JobActionForm, SkillForm)
+from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
 from .utils import (CompanyContextMixin, CompanyInitialMixin,
                     ContactGetObjectMixin, CreatedByFormValidMixin,
-                    ProcessContextMixin, ProcessInitialMixin,
-                    ProcessGetObjectMixin, PageLinksMixin)
+                    JobContextMixin, JobInitialMixin,
+                    JobGetObjectMixin, PageLinksMixin)
 
 
 @class_login_required
@@ -43,11 +43,11 @@ class CompanyUpdate(CreatedByFormValidMixin, UpdateView):
 
 
 @class_login_required
-class CompanyNoteCreate(CreatedByFormValidMixin, CompanyContextMixin,
-                        CompanyInitialMixin, CreateView):
-    form_class = CompanyNoteForm
-    model = CompanyNote
-    template_name = 'crm/company_note_form.html'
+class CompanyActionCreate(CreatedByFormValidMixin, CompanyContextMixin,
+                          CompanyInitialMixin, CreateView):
+    form_class = CompanyActionForm
+    model = CompanyAction
+    template_name = 'crm/company_action_form.html'
 
 
 @class_login_required
@@ -91,51 +91,51 @@ class ContactUpdate(CreatedByFormValidMixin, CompanyContextMixin,
 
 
 @class_login_required
-class ProcessCreate(CreatedByFormValidMixin, CompanyContextMixin,
-                    CompanyInitialMixin, CreateView):
-    form_class = ProcessForm
-    model = Process
+class JobCreate(CreatedByFormValidMixin, CompanyContextMixin,
+                CompanyInitialMixin, CreateView):
+    form_class = JobForm
+    model = Job
 
 
 @class_login_required
-class ProcessCreateGeneral(CreatedByFormValidMixin, CreateView):
-    form_class = ProcessFormGeneral
-    model = Process
+class JobCreateGeneral(CreatedByFormValidMixin, CreateView):
+    form_class = JobFormGeneral
+    model = Job
 
 
 @class_login_required
-class ProcessDelete(CompanyContextMixin, ProcessGetObjectMixin, DeleteView):
-    model = Process
-    success_url = reverse_lazy('crm_process_list')
-    slug_url_kwarg = 'process_slug'
+class JobDelete(CompanyContextMixin, JobGetObjectMixin, DeleteView):
+    model = Job
+    success_url = reverse_lazy('crm_job_list')
+    slug_url_kwarg = 'job_slug'
 
 
 @class_login_required
-class ProcessDetail(CompanyContextMixin, ProcessGetObjectMixin, DetailView):
-    model = Process
-    slug_url_kwarg = 'process_slug'
+class JobDetail(CompanyContextMixin, JobGetObjectMixin, DetailView):
+    model = Job
+    slug_url_kwarg = 'job_slug'
 
 
 @class_login_required
-class ProcessList(PageLinksMixin, ListView):
-    model = Process
+class JobList(PageLinksMixin, ListView):
+    model = Job
 
 
 @class_login_required
-class ProcessUpdate(CreatedByFormValidMixin, CompanyContextMixin,
-                    ProcessGetObjectMixin, UpdateView):
-    form_class = ProcessForm
-    model = Process
-    template_name = 'crm/process_form_update.html'
-    slug_url_kwarg = 'process_slug'
+class JobUpdate(CreatedByFormValidMixin, CompanyContextMixin,
+                JobGetObjectMixin, UpdateView):
+    form_class = JobForm
+    model = Job
+    template_name = 'crm/job_form_update.html'
+    slug_url_kwarg = 'job_slug'
 
 
 @class_login_required
-class ProcessNoteCreate(CreatedByFormValidMixin, ProcessContextMixin,
-                        ProcessInitialMixin, CreateView):
-    form_class = ProcessNoteForm
-    model = ProcessNote
-    template_name = 'crm/process_note_form.html'
+class JobActionCreate(CreatedByFormValidMixin, JobContextMixin,
+                      JobInitialMixin, CreateView):
+    form_class = JobActionForm
+    model = JobAction
+    template_name = 'crm/job_action_form.html'
 
 
 @class_login_required

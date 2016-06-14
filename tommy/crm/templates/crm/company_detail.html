@@ -21,17 +21,17 @@
             <div class="panel-heading">
               <h3 class="panel-title">
                 Open Jobs
-                <span class="small"><a href="{{ company.get_process_create_url }}">Add job</a></span>
+                <span class="small"><a href="{{ company.get_job_create_url }}">Add job</a></span>
               </h3>
             </div>
             <div class="panel-body">
               <ul>
-                {% for process in company.processes.all %}
+                {% for job in company.jobs.all %}
                   <li>
-                    <a href="{{ process.get_absolute_url }}">{{ process.title }}</a>
+                    <a href="{{ job.get_absolute_url }}">{{ job.title }}</a>
                   </li>
                 {% empty %}
-                  <li>No open processes</li>
+                  <li>No open jobs</li>
               {% endfor %}
               </ul>
             </div>
@@ -42,18 +42,18 @@
               <div class="panel-heading">
                 <h3 class="panel-title">
                   Actions
-                  <span class="small"><a href="{{ company.get_company_note_create_url }}">Add Action</a></span>
+                  <span class="small"><a href="{{ company.get_company_action_create_url }}">Add Action</a></span>
                 </h3>
               </div>
               <div class="panel-body">
-                {% for company_note in company.company_notes.all %}
+                {% for company_action in company.company_actions.all %}
                   <div class="panel panel-default">
                     <div class="panel-body">
                       <h4>
-                        {{ company_note.action|title }}
-                        <span class="small">{{ company_note.timestamp|date }} by {{ company_note.created_by.get_full_name|title }}</span>
+                        {{ company_action.action|title }}
+                        <span class="small">{{ company_action.timestamp|date }} by {{ company_action.created_by.get_full_name|title }}</span>
                       </h4>
-                      {{ company_note.description }}
+                      {{ company_action.description }}
                     </div>
                   </div>
                 {% empty %}

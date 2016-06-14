@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 
 from ..views import (CompanyCreate, CompanyDelete, CompanyDetail, CompanyList,
-                     CompanyUpdate, CompanyNoteCreate,
+                     CompanyUpdate, CompanyActionCreate,
                      )
 
 urlpatterns = [
@@ -42,8 +42,8 @@ urlpatterns = [
     url(
         r'^(?P<company_slug>[\w\-]+)/'
         r'add-action/$',
-        CompanyNoteCreate.as_view(),
-        name='crm_company_note_create'
+        CompanyActionCreate.as_view(),
+        name='crm_company_action_create'
     ),
 
 ]

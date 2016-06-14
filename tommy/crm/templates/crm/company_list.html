@@ -11,8 +11,8 @@
       <div class="list-group">
         {% for company in company_list %}
           <a href="{{ company.get_absolute_url }}" class="list-group-item">
-            {% if company.processes.count %}
-              <span class="badge">Jobs: {{ company.processes.count }}</span>
+            {% if company.jobs.count %}
+              <span class="badge">Jobs: {{ company.jobs.count }}</span>
             {% endif %}
             <strong>{{ company.name }}</strong>
             <small> - {{ company.created_by.get_full_name|title }} </small>

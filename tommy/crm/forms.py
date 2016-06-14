@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Fieldset, MultiField, Layout, Submit
 from crispy_forms.bootstrap import TabHolder, Tab
 
-from .models import Company, CompanyNote, Contact, Process, ProcessNote, Skill
+from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
 from .utils import CreatedByMixin, SlugCleanMixin
 
 
@@ -57,16 +57,16 @@ class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
         exclude = ('created_by', 'assigned_to', 'owner')
 
 
-class CompanyNoteForm(CreatedByMixin, forms.ModelForm):
+class CompanyActionForm(CreatedByMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(CompanyNoteForm, self).__init__(*args, **kwargs)
+        super(CompanyActionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
         self.helper.field_class = 'col-sm-7'
 
     class Meta:
-        model = CompanyNote
+        model = CompanyAction
         exclude = ('created_by', )
         widgets = {'company': HiddenInput()}
 
@@ -91,38 +91,38 @@ class ContactFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
         exclude = ('created_by',)
 
 
-class ProcessForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+class JobForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ProcessForm, self).__init__(*args, **kwargs)
+        super(JobForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
         self.helper.field_class = 'col-sm-7'
 
     class Meta:
-        model = Process
+        model = Job
         exclude = ('created_by',)
         widgets = {'company': HiddenInput()}
 
 
-class ProcessFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+class JobFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     class Meta:
-        model = Process
+        model = Job
         exclude = ('created_by',)
 
 
-class ProcessNoteForm(CreatedByMixin, forms.ModelForm):
+class JobActionForm(CreatedByMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ProcessNoteForm, self).__init__(*args, **kwargs)
+        super(JobActionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
         self.helper.field_class = 'col-sm-7'
 
     class Meta:
-        model = ProcessNote
+        model = JobAction
         exclude = ('created_by',)
-        widgets = {'process': HiddenInput()}
+        widgets = {'job': HiddenInput()}
 
 
 class SkillForm(SlugCleanMixin, forms.ModelForm):

@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
-from .models import Company, Contact, Process
+from .models import Company, Contact, Job
 
 
 class CompanyContextMixin:
@@ -42,37 +42,37 @@ class CompanyInitialMixin:
         return initial
 
 
-class ProcessContextMixin:
-    process_slug_url_kwarg = 'process_slug'
-    process_context_object_name = 'process'
+class JobContextMixin:
+    job_slug_url_kwarg = 'job_slug'
+    job_context_object_name = 'job'
 
     def get_context_data(self, **kwargs):
-        if hasattr(self, 'process'):
-            context = {self.process_context_object_name: self.process}
+        if hasattr(self, 'job'):
+            context = {self.job_context_object_name: self.job}
         else:
-            process_slug = self.kwargs.get(self.process_slug_url_kwarg)
-            process = get_object_or_404(Process, slug__iexact=process_slug)
-            context = {self.process_context_object_name: process}
+            job_slug = self.kwargs.get(self.job_slug_url_kwarg)
+            job = get_object_or_404(Job, slug__iexact=job_slug)
+            context = {self.job_context_object_name: job}
         context.update(kwargs)
         return super().get_context_data(**context)
 
 
-class ProcessInitialMixin:
+class JobInitialMixin:
     def get_initial(self):
-        process_slug = self.kwargs.get(self.process_slug_url_kwarg)
-        self.process = get_object_or_404(Process, slug__iexact=process_slug)
-        initial = {self.process_context_object_name: self.process}
+        job_slug = self.kwargs.get(self.job_slug_url_kwarg)
+        self.job = get_object_or_404(Job, slug__iexact=job_slug)
+        initial = {self.job_context_object_name: self.job}
         initial.update(self.initial)
         return initial
 
 
-class ProcessGetObjectMixin:
+class JobGetObjectMixin:
     def get_object(self, queryset=None):
         company_slug = self.kwargs.get(self.company_slug_url_kwarg)
-        process_slug = self.kwargs.get(self.slug_url_kwarg)
+        job_slug = self.kwargs.get(self.slug_url_kwarg)
         return get_object_or_404(
-            Process,
-            slug__iexact=process_slug,
+            Job,
+            slug__iexact=job_slug,
             company__slug__iexact=company_slug)
 
 
