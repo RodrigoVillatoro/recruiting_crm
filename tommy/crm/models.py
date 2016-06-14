@@ -89,13 +89,13 @@ class Company(models.Model):
     def get_delete_url(self):
         return reverse('crm_company_delete', kwargs={'slug': self.slug})
 
-    def get_process_create_url(self):
+    def get_job_create_url(self):
         return reverse(
-            'crm_process_create', kwargs={'company_slug': self.slug})
+            'crm_job_create', kwargs={'company_slug': self.slug})
 
-    def get_company_note_create_url(self):
+    def get_company_action_create_url(self):
         return reverse(
-            'crm_company_note_create', kwargs={'company_slug': self.slug})
+            'crm_company_action_create', kwargs={'company_slug': self.slug})
 
     def get_contact_create_url(self):
         return reverse(
@@ -108,7 +108,7 @@ class Company(models.Model):
         return self.name
 
 
-class CompanyNote(models.Model):
+class CompanyAction(models.Model):
     ACTION_CHOICES = (
         ('phone_call', 'Phone call'),
         ('meeting', 'Meeting'),
@@ -124,11 +124,11 @@ class CompanyNote(models.Model):
     blind_cvs_sent = models.IntegerField(default=0)
     is_highlighted = models.BooleanField(default=False)
     document = models.FileField(
-        upload_to='uploads/notes/companies/%Y/%m/%d/', blank=True)
+        upload_to='uploads/actions/companies/%Y/%m/%d/', blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
-    company = models.ForeignKey(Company, related_name='company_notes')
+    company = models.ForeignKey(Company, related_name='company_actions')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_company_notes',
+        settings.AUTH_USER_MODEL, related_name='created_company_actions',
         db_index=True)
 
     class Meta:
@@ -195,7 +195,7 @@ class Contact(models.Model):
         return '{}: {}'.format(self.email, self.company)
 
 
-class Process(models.Model):
+class Job(models.Model):
     JOB_TYPE_CHOICES = (
         ('employee', 'Employee'),
         ('freelance', 'Freelance'),
@@ -216,17 +216,17 @@ class Process(models.Model):
     total_income = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True)
     document = models.FileField(
-        upload_to='uploads/docs/process/%Y/%m/%d/', blank=True)
+        upload_to='uploads/docs/jobs/%Y/%m/%d/', blank=True)
     slug = models.SlugField(max_length=250, unique=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
-    company = models.ForeignKey(Company, related_name='processes')
-    skills = models.ManyToManyField(Skill, related_name='processes')
-    city = models.ForeignKey(City, related_name='processes')
+    company = models.ForeignKey(Company, related_name='jobs')
+    skills = models.ManyToManyField(Skill, related_name='jobs')
+    city = models.ForeignKey(City, related_name='jobs')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_processes',
+        settings.AUTH_USER_MODEL, related_name='created_jobs',
         db_index=True)
     assigned_to = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='assigned_processes')
+        settings.AUTH_USER_MODEL, related_name='assigned_jobs')
     # fee (por defecto es el de la empresa)
     # assigned to (por defecto el owner del cliente)
 
@@ -236,41 +236,41 @@ class Process(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'crm_process_detail',
+            'crm_job_detail',
             kwargs={
                 'company_slug': self.company.slug,
-                'process_slug': self.slug,
+                'job_slug': self.slug,
             })
 
     def get_delete_url(self):
         return reverse(
-            'crm_process_delete',
+            'crm_job_delete',
             kwargs={
                 'company_slug': self.company.slug,
-                'process_slug': self.slug,
+                'job_slug': self.slug,
             })
 
-    def get_process_note_create_url(self):
+    def get_job_action_create_url(self):
         return reverse(
-            'crm_process_note_create',
+            'crm_job_action_create',
             kwargs={
                 'company_slug': self.company.slug,
-                'process_slug': self.slug,
+                'job_slug': self.slug,
             })
 
     def get_update_url(self):
         return reverse(
-            'crm_process_update',
+            'crm_job_update',
             kwargs={
                 'company_slug': self.company.slug,
-                'process_slug': self.slug
+                'job_slug': self.slug
             })
 
     def __str__(self):
         return '{}: {}'.format(self.company, self.title)
 
 
-class ProcessNote(models.Model):
+class JobAction(models.Model):
     ACTION_CHOICES = (
         ('candidates_sent', 'Candidates Sent'),
         ('client_interviewed_candidate', 'Client Interviewed Candidate'),
@@ -286,20 +286,20 @@ class ProcessNote(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     is_highlighted = models.BooleanField(default=False)
     document = models.FileField(
-        upload_to='uploads/notes/process/%Y/%m/%d/', blank=True)
-    process = models.ForeignKey(Process, related_name='process_notes')
+        upload_to='uploads/actions/job/%Y/%m/%d/', blank=True)
+    job = models.ForeignKey(Job, related_name='job_actions')
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='created_job_notes',
+        settings.AUTH_USER_MODEL, related_name='created_job_actions',
         db_index=True)
 
     class Meta:
         ordering = ('-timestamp',)
 
     def get_absolute_url(self):
-        return self.process.get_absolute_url()
+        return self.job.get_absolute_url()
 
     def __str__(self):
-        return '{}: {}'.format(self.process, self.action)
+        return '{}: {}'.format(self.job, self.action)
 
 
 # Reports
