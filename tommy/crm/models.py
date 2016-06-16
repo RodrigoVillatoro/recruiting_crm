@@ -6,6 +6,9 @@ from django.db import models
 class Industry(models.Model):
     name = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = 'industries'
+
     def __str__(self):
         return self.name
 
@@ -28,6 +31,9 @@ class Country(models.Model):
     country_code = models.CharField(max_length=2, primary_key=True)
     name = models.CharField(max_length=100)
 
+    class Meta:
+        verbose_name_plural = 'countries'
+
     def __str__(self):
         return self.name
 
@@ -43,6 +49,7 @@ class City(models.Model):
 
     class Meta:
         ordering = ('name', 'country')
+        verbose_name_plural = 'cities'
 
     def __str__(self):
         return '{}'.format(self.name)
