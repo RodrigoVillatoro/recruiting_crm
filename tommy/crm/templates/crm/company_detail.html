@@ -29,6 +29,7 @@
                 {% for job in company.jobs.all %}
                   <li>
                     <a href="{{ job.get_absolute_url }}">{{ job.title }}</a>
+                    <p class="small">{{ job.assigned_to.get_full_name }} | {{ job.job_type|title }}<p>
                   </li>
                 {% empty %}
                   <li>No open jobs</li>
@@ -173,7 +174,7 @@
                 <h4>
                   {{ contact.get_full_name|title }}
                   {% if contact.is_primary_contact %}*{% endif %}
-                  <a class="small" href="{{ contact.get_absolute_url }}">Details</a>
+                  <span class="small"><span class="small"><a href="{{ contact.get_absolute_url }}">Details</a></span></span>
                 </h4>
                 <table>
                   {% if contact.title %}
@@ -203,7 +204,7 @@
                   {% if contact.country %}
                     <tr>
                       <td>Country:</td>
-                      <td>{{ contact.country|upper }}</td>
+                      <td>{{ contact.country|title }}</td>
                     </tr>
                   {% endif %}
                   {% if contact.country %}
