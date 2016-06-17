@@ -27,7 +27,6 @@ class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
             ),
             Fieldset(
                 'Location',
-                'country',
                 'city',
                 'address',
                 'zip_code',

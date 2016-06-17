@@ -29,7 +29,7 @@
                 {% for job in company.jobs.all %}
                   <li>
                     <a href="{{ job.get_absolute_url }}">{{ job.title }}</a>
-                    <p class="small">{{ job.assigned_to.get_full_name }} | {{ job.job_type|title }}<p>
+                    <span class="small">({{ job.job_type|title }}) - {{ job.assigned_to.get_full_name }}<span>
                   </li>
                 {% empty %}
                   <li>No open jobs</li>
@@ -119,7 +119,7 @@
                 {% endif %}
                 <tr>
                   <td>Country:</td>
-                  <td>{{ company.country|upper }}</td>
+                  <td>{{ company.city.country|title }}</td>
                 </tr>
                 <tr>
                   <td>City:</td>

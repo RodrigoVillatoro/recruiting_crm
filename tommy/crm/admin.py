@@ -26,7 +26,7 @@ admin.site.register(Skill)
 class CompanyAdmin(admin.ModelAdmin):
 
     # List View
-    list_display = ('name', 'city', 'assigned_to', 'job_count')
+    list_display = ('name', 'city', 'get_assigned_to', 'job_count')
     list_filter = ('assigned_to', 'status')
     search_fields = ('name',)
     filter_horizontal = ('skills',)
@@ -37,6 +37,10 @@ class CompanyAdmin(admin.ModelAdmin):
 
     def job_count(self, company):
         return company.job_number
-
     job_count.short_description = 'Open Jobs'
     job_count.admin_order_field = 'job_number'
+
+    def get_assigned_to(self, company):
+        return company.assigned_to.get_full_name()
+    get_assigned_to.short_description = 'Assigned To'
+    get_assigned_to.admin_order_field = 'assigned_to__first_name'
