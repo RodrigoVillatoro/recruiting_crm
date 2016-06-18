@@ -3,15 +3,18 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
+from crispy_forms.helper import FormHelper
+
 from .models import Company, Contact, Job
 
 
-class Foo:
-    def get_initial(self):
-        current_user = self.kwargs.get('current_user')
-        print('foo')
-        print(current_user)
-
+class CrispyMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
 
 class InjectCompanyContextMixin:
     company_slug_url_kwarg = 'company_slug'

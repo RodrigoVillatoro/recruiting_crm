@@ -9,7 +9,7 @@
   <h2>Add Action <small>{{ job }}</small></h2>
   <div class="row">
     <div class="col-md-7">
-      <form action="{{ procjobess.get_job_action_create_url }}" method="post" class="form-horizontal">
+      <form action="{{ job.get_job_action_create_url }}" method="post" class="form-horizontal">
         {% csrf_token %}
         {% crispy form %}
         <div class="form-group">

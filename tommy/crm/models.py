@@ -130,8 +130,13 @@ class CompanyAction(models.Model):
         ('blind_cv', 'Blind CV'),
         ('other', 'Other'),
     )
-    action = models.CharField(max_length=15, choices=ACTION_CHOICES)
-    title = models.CharField(max_length=100, blank=True)
+    STATUS_CHOICES = (
+        ('to_do', 'To Do'),
+        ('done', 'Done'),
+    )
+    action = models.CharField(max_length=25, choices=ACTION_CHOICES)
+    status = models.CharField(
+        max_length=25, choices=STATUS_CHOICES, default='to_do')
     description = models.TextField()
     blind_cvs_sent = models.IntegerField(default=0)
     is_highlighted = models.BooleanField(default=False)

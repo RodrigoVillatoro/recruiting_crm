@@ -6,9 +6,10 @@
 
 {% block content %}
   <h2>{{ skill.name }}</h2>
+
   {% if skill.companies.all %}
     <section>
-      <h3>Compan{{ skill.companies.count|pluralize:"y,ies" }}</h3>
+      <h3>Companies</h3>
       <p>
         This skill is associated with
         {{ skill.companies.count }}
@@ -24,20 +25,26 @@
     </section>
   {% endif %}
 
-{#  {% if tag.blog_post.all %}#}
-{#    <section>#}
-{#      <h3>Blog Post{{ tag.blog_posts.count|pluralize }}</h3>#}
-{#      <ul>#}
-{#        {% for post in tag.blog_posts.all %}#}
-{#          <li>#}
-{#            <a href="">{{ post.title|title }}</a>#}
-{#          </li>#}
-{#        {% endfor %}#}
-{#      </ul>#}
-{#    </section>#}
-{#  {% endif %}#}
+  {% if skill.jobs.all %}
+    <section>
+      <h3>Jobs</h3>
+      <p>
+        This skill is associated with
+        {{ skill.jobs.count }}
+        job{{ skill.jobs.count|pluralize}}
+      </p>
+      <ul>
+        {% for job in skill.jobs.all %}
+          <li>
+            <a href="{{ job.get_absolute_url }}">{{ job.title|title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
-  {% if not skill.companies.all %}
+
+  {% if not skill.companies.all and not skill.jobs.all %}
     <p>This skill is not related to any content.</p>
   {% endif %}
 {% endblock %}

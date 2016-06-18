@@ -10,7 +10,6 @@
   <div class="row">
     <div class="col-md-7">
       <form action="{% url 'crm_company_create' %}" method="post" class="form-horizontal">
-        {% csrf_token %}
         {% crispy form %}
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-7">

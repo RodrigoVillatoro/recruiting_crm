@@ -2,20 +2,16 @@ from django import forms
 from django.forms.widgets import HiddenInput
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Fieldset, MultiField, Layout, Submit
-from crispy_forms.bootstrap import TabHolder, Tab
+from crispy_forms.layout import Fieldset, Layout
 
 from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
-from .utils import CreatedByMixin, SlugCleanMixin, Foo
+from .utils import CreatedByMixin, CrispyMixin, SlugCleanMixin
 
 
-class CompanyForm(Foo, CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
+                  forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(CompanyForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+        super().__init__(*args, **kwargs)
         self.helper.layout = Layout(
             Fieldset(
                 'General Info',
@@ -58,14 +54,7 @@ class CompanyForm(Foo, CreatedByMixin, SlugCleanMixin, forms.ModelForm):
         exclude = ('created_by',)
 
 
-class CompanyActionForm(CreatedByMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(CompanyActionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
-
+class CompanyActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
     class Meta:
         model = CompanyAction
         exclude = ('created_by', )
@@ -74,7 +63,7 @@ class CompanyActionForm(CreatedByMixin, forms.ModelForm):
 
 class ContactForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ContactForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
@@ -87,6 +76,13 @@ class ContactForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
 
 
 class ContactFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = Contact
         exclude = ('created_by',)
@@ -94,7 +90,7 @@ class ContactFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
 
 class JobForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(JobForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
@@ -107,6 +103,13 @@ class JobForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
 
 
 class JobFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_tag = False
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-7'
+
     class Meta:
         model = Job
         exclude = ('created_by',)
@@ -114,7 +117,7 @@ class JobFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
 
 class JobActionForm(CreatedByMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(JobActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
@@ -128,7 +131,7 @@ class JobActionForm(CreatedByMixin, forms.ModelForm):
 
 class SkillForm(SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(SkillForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_tag = False
         self.helper.label_class = 'col-sm-3'
