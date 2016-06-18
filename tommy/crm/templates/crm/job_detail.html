@@ -10,12 +10,10 @@
       <div class="col-md-8">
         <ol class="breadcrumb">
           <li><a href="{% url 'crm_job_list' %}">Jobs</a></li>
+          <li><a href="{{ job.company.get_absolute_url }}">{{ job.company.name }}</a></li>
           <li class="active">{{ job.title }}</li>
         </ol>
         <h2>{{ job.title }}</h2>
-        <h5>
-          <a href="{{ job.company.get_absolute_url }}">{{ job.company }}</a>
-        </h5>
       </div>
     </div>
     <div class="row">
@@ -64,6 +62,10 @@
             </div>
             <div class="panel-body">
               <table>
+                <tr>
+                  <td>Company:</td>
+                  <td><a href="{{ job.company.get_absolute_url }}">{{ job.company }}</a></td>
+                </tr>
                 <tr>
                   <td>Assigned to:</td>
                   <td>{{ job.assigned_to.get_full_name|title }}</td>
