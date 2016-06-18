@@ -5,3 +5,5 @@ __pycache__
 
 db*
 config_secret.py
+
+to-do-list.txt
