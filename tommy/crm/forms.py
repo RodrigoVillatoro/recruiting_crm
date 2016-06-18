@@ -61,13 +61,8 @@ class CompanyActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
         widgets = {'company': HiddenInput()}
 
 
-class ContactForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class ContactForm(
+    CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Contact
@@ -75,26 +70,16 @@ class ContactForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
         widgets = {'company': HiddenInput()}
 
 
-class ContactFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class ContactFormGeneral(
+    CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Contact
         exclude = ('created_by',)
 
 
-class JobForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class JobForm(
+    CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Job
@@ -102,26 +87,15 @@ class JobForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
         widgets = {'company': HiddenInput()}
 
 
-class JobFormGeneral(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class JobFormGeneral(
+    CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Job
         exclude = ('created_by',)
 
 
-class JobActionForm(CreatedByMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class JobActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
 
     class Meta:
         model = JobAction
@@ -129,13 +103,7 @@ class JobActionForm(CreatedByMixin, forms.ModelForm):
         widgets = {'job': HiddenInput()}
 
 
-class SkillForm(SlugCleanMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-sm-3'
-        self.helper.field_class = 'col-sm-7'
+class SkillForm(SlugCleanMixin, CrispyMixin, forms.ModelForm):
 
     class Meta:
         model = Skill

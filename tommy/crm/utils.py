@@ -16,6 +16,7 @@ class CrispyMixin:
         self.helper.label_class = 'col-sm-3'
         self.helper.field_class = 'col-sm-7'
 
+
 class InjectCompanyContextMixin:
     company_slug_url_kwarg = 'company_slug'
     company_context_object_name = 'company'
