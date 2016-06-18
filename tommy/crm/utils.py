@@ -6,10 +6,19 @@ from django.shortcuts import get_object_or_404
 from .models import Company, Contact, Job
 
 
-class CompanyContextMixin:
+class Foo:
+    def get_initial(self):
+        current_user = self.kwargs.get('current_user')
+        print('foo')
+        print(current_user)
+
+
+class InjectCompanyContextMixin:
     company_slug_url_kwarg = 'company_slug'
     company_context_object_name = 'company'
     company_context_object_assigned_to = 'assigned_to'
+    company_context_object_fee = 'fee'
+    company_context_object_city = 'city'
 
     def get_context_data(self, **kwargs):
         if hasattr(self, 'company'):
@@ -19,19 +28,23 @@ class CompanyContextMixin:
             company = get_object_or_404(Company, slug__iexact=company_slug)
             context = {
                 self.company_context_object_name: company,
-                self.company_context_object_assigned_to: company.assigned_to
+                self.company_context_object_assigned_to: company.assigned_to,
+                self.company_context_object_fee: company.fee,
+                self.company_context_object_city: company.city,
             }
         context.update(kwargs)
         return super().get_context_data(**context)
 
 
-class CompanyInitialMixin:
+class InjectCompanyInitialMixin:
     def get_initial(self):
         company_slug = self.kwargs.get(self.company_slug_url_kwarg)
         self.company = get_object_or_404(Company, slug__iexact=company_slug)
         initial = {
             self.company_context_object_name: self.company,
-            self.company_context_object_assigned_to: self.company,
+            self.company_context_object_assigned_to: self.company.assigned_to,
+            self.company_context_object_fee: self.company.fee,
+            self.company_context_object_city: self.company.city,
         }
         initial.update(self.initial)
         return initial
@@ -47,7 +60,7 @@ class ContactGetObjectMixin:
             company__slug__iexact=company_slug)
 
 
-class JobContextMixin:
+class InjectJobContextMixin:
     job_slug_url_kwarg = 'job_slug'
     job_context_object_name = 'job'
 
@@ -62,7 +75,7 @@ class JobContextMixin:
         return super().get_context_data(**context)
 
 
-class JobInitialMixin:
+class InjectJobInitialMixin:
     def get_initial(self):
         job_slug = self.kwargs.get(self.job_slug_url_kwarg)
         self.job = get_object_or_404(Job, slug__iexact=job_slug)
@@ -131,10 +144,6 @@ class CreatedByMixin:
         if not obj.pk:
             current_user = get_user(request)
             obj.created_by = current_user
-            if hasattr(obj.__class__, 'owner'):
-                obj.owner = current_user
-            if hasattr(obj.__class__, 'assigned_to'):
-                obj.assigned_to = current_user
         if commit:
             obj.save()
             self.save_m2m()

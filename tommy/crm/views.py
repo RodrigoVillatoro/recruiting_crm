@@ -7,9 +7,9 @@ from .forms import (CompanyForm, CompanyActionForm, ContactForm,
                     ContactFormGeneral, JobForm, JobFormGeneral,
                     JobActionForm, SkillForm)
 from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
-from .utils import (CompanyContextMixin, CompanyInitialMixin,
+from .utils import (InjectCompanyContextMixin, InjectCompanyInitialMixin,
                     ContactGetObjectMixin, CreatedByFormValidMixin,
-                    JobContextMixin, JobInitialMixin,
+                    InjectJobContextMixin, InjectJobInitialMixin,
                     JobGetObjectMixin, PageLinksMixin)
 
 
@@ -17,6 +17,16 @@ from .utils import (CompanyContextMixin, CompanyInitialMixin,
 class CompanyCreate(CreatedByFormValidMixin, CreateView):
     form_class = CompanyForm
     model = Company
+
+    def get_initial(self):
+        from django.contrib.auth import get_user
+        current_user = get_user(self.request)
+        initial = {
+            'owner': current_user,
+            'assigned_to': current_user
+        }
+        initial.update(self.initial)
+        return initial
 
 
 @class_login_required
@@ -43,16 +53,16 @@ class CompanyUpdate(CreatedByFormValidMixin, UpdateView):
 
 
 @class_login_required
-class CompanyActionCreate(CreatedByFormValidMixin, CompanyContextMixin,
-                          CompanyInitialMixin, CreateView):
+class CompanyActionCreate(CreatedByFormValidMixin, InjectCompanyContextMixin,
+                          InjectCompanyInitialMixin, CreateView):
     form_class = CompanyActionForm
     model = CompanyAction
     template_name = 'crm/company_action_form.html'
 
 
 @class_login_required
-class ContactCreate(CreatedByFormValidMixin, CompanyContextMixin,
-                    CompanyInitialMixin, CreateView):
+class ContactCreate(CreatedByFormValidMixin, InjectCompanyContextMixin,
+                    InjectCompanyInitialMixin, CreateView):
     form_class = ContactForm
     model = Contact
 
@@ -64,14 +74,14 @@ class ContactCreateGeneral(CreatedByFormValidMixin, CreateView):
 
 
 @class_login_required
-class ContactDelete(CompanyContextMixin, ContactGetObjectMixin, DeleteView):
+class ContactDelete(InjectCompanyContextMixin, ContactGetObjectMixin, DeleteView):
     model = Contact
     success_url = reverse_lazy('crm_contact_list')
     slug_url_kwarg = 'contact_slug'
 
 
 @class_login_required
-class ContactDetail(CompanyContextMixin, ContactGetObjectMixin, DetailView):
+class ContactDetail(InjectCompanyContextMixin, ContactGetObjectMixin, DetailView):
     model = Contact
     slug_url_kwarg = 'contact_slug'
 
@@ -82,7 +92,7 @@ class ContactList(PageLinksMixin, ListView):
 
 
 @class_login_required
-class ContactUpdate(CreatedByFormValidMixin, CompanyContextMixin,
+class ContactUpdate(CreatedByFormValidMixin, InjectCompanyContextMixin,
                     ContactGetObjectMixin, UpdateView):
     form_class = ContactForm
     model = Contact
@@ -91,8 +101,8 @@ class ContactUpdate(CreatedByFormValidMixin, CompanyContextMixin,
 
 
 @class_login_required
-class JobCreate(CreatedByFormValidMixin, CompanyContextMixin,
-                CompanyInitialMixin, CreateView):
+class JobCreate(CreatedByFormValidMixin, InjectCompanyContextMixin,
+                InjectCompanyInitialMixin, CreateView):
     form_class = JobForm
     model = Job
 
@@ -104,14 +114,14 @@ class JobCreateGeneral(CreatedByFormValidMixin, CreateView):
 
 
 @class_login_required
-class JobDelete(CompanyContextMixin, JobGetObjectMixin, DeleteView):
+class JobDelete(InjectCompanyContextMixin, JobGetObjectMixin, DeleteView):
     model = Job
     success_url = reverse_lazy('crm_job_list')
     slug_url_kwarg = 'job_slug'
 
 
 @class_login_required
-class JobDetail(CompanyContextMixin, JobGetObjectMixin, DetailView):
+class JobDetail(InjectCompanyContextMixin, JobGetObjectMixin, DetailView):
     model = Job
     slug_url_kwarg = 'job_slug'
 
@@ -122,7 +132,7 @@ class JobList(PageLinksMixin, ListView):
 
 
 @class_login_required
-class JobUpdate(CreatedByFormValidMixin, CompanyContextMixin,
+class JobUpdate(CreatedByFormValidMixin, InjectCompanyContextMixin,
                 JobGetObjectMixin, UpdateView):
     form_class = JobForm
     model = Job
@@ -131,8 +141,8 @@ class JobUpdate(CreatedByFormValidMixin, CompanyContextMixin,
 
 
 @class_login_required
-class JobActionCreate(CreatedByFormValidMixin, JobContextMixin,
-                      JobInitialMixin, CreateView):
+class JobActionCreate(CreatedByFormValidMixin, InjectJobContextMixin,
+                      InjectJobInitialMixin, CreateView):
     form_class = JobActionForm
     model = JobAction
     template_name = 'crm/job_action_form.html'

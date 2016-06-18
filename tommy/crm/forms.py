@@ -6,10 +6,10 @@ from crispy_forms.layout import ButtonHolder, Fieldset, MultiField, Layout, Subm
 from crispy_forms.bootstrap import TabHolder, Tab
 
 from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
-from .utils import CreatedByMixin, SlugCleanMixin
+from .utils import CreatedByMixin, SlugCleanMixin, Foo
 
 
-class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
+class CompanyForm(Foo, CreatedByMixin, SlugCleanMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CompanyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -24,6 +24,8 @@ class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
                 'skills',
                 'status',
                 'slug',
+                'owner',
+                'assigned_to',
             ),
             Fieldset(
                 'Location',
@@ -53,7 +55,7 @@ class CompanyForm(CreatedByMixin, SlugCleanMixin, forms.ModelForm):
 
     class Meta:
         model = Company
-        exclude = ('created_by', 'assigned_to', 'owner')
+        exclude = ('created_by',)
 
 
 class CompanyActionForm(CreatedByMixin, forms.ModelForm):

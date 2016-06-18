@@ -13,6 +13,10 @@
           <li class="active">{{ company.name }}</li>
         </ol>
         <h2>{{ company.name }}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
         <section>
           <p>{{ company.description|truncatewords_html:100 }}</p>
         </section>
@@ -29,7 +33,7 @@
                 {% for job in company.jobs.all %}
                   <li>
                     <a href="{{ job.get_absolute_url }}">{{ job.title }}</a>
-                    <span class="small">({{ job.job_type|title }}) - {{ job.assigned_to.get_full_name }}<span>
+                    <span class="small">({{ job.job_type|title }}) - {{ job.assigned_to.get_full_name }}</span>
                   </li>
                 {% empty %}
                   <li>No open jobs</li>
@@ -83,6 +87,12 @@
                   <td>Owner:</td>
                   <td>{{ company.owner.get_full_name|title }}</td>
                 </tr>
+                {% if company.owner != company.assigned_to %}
+                  <tr>
+                    <td>Assigned to:</td>
+                    <td>{{ company.assigned_to.get_full_name|title }}</td>
+                  </tr>
+                {% endif %}
                 <tr>
                   <td>Hiring Skills:</td>
                   <td>{% for skill in company.skills.all %}

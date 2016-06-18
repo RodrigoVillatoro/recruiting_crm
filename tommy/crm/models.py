@@ -89,8 +89,7 @@ class Company(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='owned_companies')
     assigned_to = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='assigned_companies',
-        blank=True)
+        settings.AUTH_USER_MODEL, related_name='assigned_companies')
 
     class Meta:
         ordering = ('-timestamp',)
@@ -167,7 +166,6 @@ class Contact(models.Model):
     is_primary_contact = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='contacts')
-    country = models.ForeignKey(Country, related_name='contacts')
     city = models.ForeignKey(City, related_name='contacts')
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='contacts',
@@ -242,8 +240,6 @@ class Job(models.Model):
         db_index=True)
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='assigned_jobs')
-    # fee (por defecto es el de la empresa)
-    # assigned to (por defecto el owner del cliente)
 
     class Meta:
         ordering = ('-timestamp',)
