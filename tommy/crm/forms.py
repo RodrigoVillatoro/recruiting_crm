@@ -65,7 +65,7 @@ class ContactForm(
 
     class Meta:
         model = Contact
-        exclude = ('created_by',)
+        exclude = ('created_by', 'slug')
         widgets = {'company': HiddenInput()}
 
 
@@ -74,7 +74,7 @@ class ContactFormGeneral(
 
     class Meta:
         model = Contact
-        exclude = ('created_by',)
+        exclude = ('created_by', 'slug')
 
 
 class JobForm(
@@ -82,7 +82,7 @@ class JobForm(
 
     class Meta:
         model = Job
-        exclude = ('created_by',)
+        exclude = ('created_by', 'slug')
         widgets = {'company': HiddenInput()}
 
 
@@ -91,7 +91,7 @@ class JobFormGeneral(
 
     class Meta:
         model = Job
-        exclude = ('created_by',)
+        exclude = ('created_by', 'slug')
 
 
 class JobActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
@@ -106,4 +106,4 @@ class SkillForm(SlugCleanMixin, CrispyMixin, forms.ModelForm):
 
     class Meta:
         model = Skill
-        fields = '__all__'
+        exclude = ('slug', )

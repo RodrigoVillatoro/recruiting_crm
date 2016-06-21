@@ -12,12 +12,23 @@ def get_unique_slug(model, slug):
         slug: slugified text, usually from model name or title
     Returns: unique slug for that model with correlative number at the end
     """
-    if model.objects.filter(slug__iexact=slug).count() > 0:
+    original_slug = slug
+    slug_count = model.objects.filter(slug__iexact=slug).count()
+
+    if slug_count > 0:
         i = 0
         while True:
             i += 1
             slug = slug.rsplit('-', 1)[0]
-            slug = ('{}-{}'.format(slug, i))
+            # If after splitting, we have the original slug, we can just add
+            # the correlative number
+            if slug == original_slug:
+                slug = ('{}-{}'.format(slug, i))
+            # If after splitting we don't have the original slug, we might
+            # have split the slug itself, ex ['rodrigo', 'villatoro'].
+            # In this case, we need to add correlative to original slug
+            else:
+                slug = ('{}-{}'.format(original_slug, i))
             if model.objects.filter(slug__iexact=slug).count() == 0:
                 break
     return slug
@@ -34,7 +45,7 @@ class Industry(models.Model):
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=31, db_index=True)
+    name = models.CharField(max_length=31, db_index=True, unique=True)
     slug = models.SlugField(max_length=31, unique=True)
 
     class Meta:
@@ -42,6 +53,16 @@ class Skill(models.Model):
 
     def get_absolute_url(self):
         return reverse('crm_skill_detail', kwargs={'slug': self.slug})
+
+    def clean(self):
+        self.name = self.name.lower()
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.name)
+            self.slug = get_unique_slug(Skill, slug)
+            super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.name
@@ -193,7 +214,7 @@ class Contact(models.Model):
     mobile = models.CharField(max_length=25, blank=True)
     address = models.CharField(max_length=100, blank=True)
     zip_code = models.CharField(max_length=10, blank=True)
-    slug = models.SlugField(max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     is_primary_contact = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     company = models.ForeignKey(Company, related_name='contacts')
@@ -204,7 +225,6 @@ class Contact(models.Model):
 
     class Meta:
         ordering = ('-is_primary_contact',)
-        unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
         return reverse(
@@ -232,6 +252,13 @@ class Contact(models.Model):
 
     def get_full_name(self):
         return '{} {}'.format(self.first_name, self.last_name)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.get_full_name())
+            company_name = self.company.name
+            self.slug = get_unique_slug(Contact, slug, company_name)
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return '{}: {}'.format(self.email, self.company)
@@ -274,7 +301,6 @@ class Job(models.Model):
 
     class Meta:
         ordering = ('-timestamp',)
-        unique_together = ('slug', 'company')
 
     def get_absolute_url(self):
         return reverse(
