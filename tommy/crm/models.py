@@ -257,7 +257,7 @@ class Contact(models.Model):
         if not self.slug:
             slug = slugify(self.get_full_name())
             company_name = self.company.name
-            self.slug = get_unique_slug(Contact, slug, company_name)
+            self.slug = get_unique_slug(Contact, slug)
             super().save(*args, **kwargs)
 
     def __str__(self):
