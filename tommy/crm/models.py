@@ -1,6 +1,26 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.text import slugify
+
+
+def get_unique_slug(model, slug):
+    """
+    Simple implementation to generate unique slug fields.
+    Args:
+        model: Model to generate the slug for. Ex: Company, Job, etc.
+        slug: slugified text, usually from model name or title
+    Returns: unique slug for that model with correlative number at the end
+    """
+    if model.objects.filter(slug__iexact=slug).count() > 0:
+        i = 0
+        while True:
+            i += 1
+            slug = slug.rsplit('-', 1)[0]
+            slug = ('{}-{}'.format(slug, i))
+            if model.objects.filter(slug__iexact=slug).count() == 0:
+                break
+    return slug
 
 
 class Industry(models.Model):
@@ -69,7 +89,7 @@ class Company(models.Model):
     description = models.TextField(blank=True)
     address = models.CharField(max_length=100, blank=True)
     zip_code = models.CharField(max_length=10, blank=True)
-    slug = models.SlugField(max_length=250, unique=True)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     official_company = models.BooleanField(
         default=True,
         help_text='Official company in Nubelo, in case of duplicates',
@@ -115,6 +135,12 @@ class Company(models.Model):
 
     def get_update_url(self):
         return reverse('crm_company_update', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.name)
+            self.slug = get_unique_slug(Company, slug)
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

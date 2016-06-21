@@ -19,7 +19,6 @@ class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
                 'industry',
                 'skills',
                 'status',
-                'slug',
                 'owner',
                 'assigned_to',
             ),
@@ -51,13 +50,13 @@ class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
 
     class Meta:
         model = Company
-        exclude = ('created_by',)
+        exclude = ('created_by', 'slug')
 
 
 class CompanyActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
     class Meta:
         model = CompanyAction
-        exclude = ('created_by', )
+        exclude = ('created_by',)
         widgets = {'company': HiddenInput()}
 
 
