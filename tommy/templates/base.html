@@ -44,6 +44,9 @@
               <li class="{% if '/skills/' in request.path %} active {% endif %}">
                 <a href="{% url 'crm_skill_list' %}">Skills</a>
               </li>
+              <li class="{% if '/to-do-list/' in request.path %} active {% endif %}">
+                <a href="{% url 'crm_company_action_to_do_list' %}">To Do List</a>
+              </li>
             </ul>
             <form class="navbar-form navbar-left" role="search">
               <div class="form-group">

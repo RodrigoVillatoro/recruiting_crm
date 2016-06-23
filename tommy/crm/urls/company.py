@@ -1,9 +1,9 @@
 from django.conf.urls import url
 
 
-from ..views import (CompanyCreate, CompanyDelete, CompanyDetail, CompanyList,
-                     CompanyUpdate, CompanyActionCreate,
-                     )
+from ..views import (CompanyCreate, CompanyDelete,
+                     CompanyDetail, CompanyList, CompanyUpdate,
+                     CompanyActionCreate, CompanyActionUpdate)
 
 urlpatterns = [
 
@@ -45,5 +45,9 @@ urlpatterns = [
         CompanyActionCreate.as_view(),
         name='crm_company_action_create'
     ),
-
+    url(
+        r'^/action/(?P<pk>\d+)/update/$',
+        CompanyActionUpdate.as_view(),
+        name='crm_company_action_update'
+    ),
 ]

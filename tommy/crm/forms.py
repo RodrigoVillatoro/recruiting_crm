@@ -56,8 +56,14 @@ class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
 class CompanyActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
     class Meta:
         model = CompanyAction
-        exclude = ('created_by',)
+        exclude = ('created_by', 'completed_timestamp')
         widgets = {'company': HiddenInput()}
+
+
+class CompanyActionUpdateForm(CrispyMixin, forms.ModelForm):
+    class Meta:
+        model = CompanyAction
+        exclude = ('created_by', 'completed_timestamp', 'company', 'action')
 
 
 class ContactForm(

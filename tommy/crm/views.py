@@ -3,8 +3,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView,
                                   ListView, UpdateView)
 
 from user.decorators import class_login_required
-from .forms import (CompanyForm, CompanyActionForm, ContactForm,
-                    ContactFormGeneral, JobForm, JobFormGeneral,
+from .forms import (CompanyForm, CompanyActionForm, CompanyActionUpdateForm,
+                    ContactForm, ContactFormGeneral, JobForm, JobFormGeneral,
                     JobActionForm, SkillForm)
 from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
 from .utils import (InjectCompanyContextMixin, InjectCompanyInitialMixin,
@@ -53,11 +53,25 @@ class CompanyUpdate(CreatedByFormValidMixin, UpdateView):
 
 
 @class_login_required
+class CompanyActionToDoList(PageLinksMixin, ListView):
+    queryset = CompanyAction.objects.filter(status='to_do')
+    context_object_name = 'company_action_to_do_list'
+    template_name = 'crm/company_action_to_do_list.html'
+
+
+@class_login_required
 class CompanyActionCreate(CreatedByFormValidMixin, InjectCompanyContextMixin,
                           InjectCompanyInitialMixin, CreateView):
     form_class = CompanyActionForm
     model = CompanyAction
     template_name = 'crm/company_action_form.html'
+
+
+@class_login_required
+class CompanyActionUpdate(UpdateView):
+    form_class = CompanyActionUpdateForm
+    model = CompanyAction
+    template_name = 'crm/company_action_update.html'
 
 
 @class_login_required

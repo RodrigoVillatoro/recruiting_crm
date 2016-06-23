@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -61,7 +62,7 @@ class Skill(models.Model):
         if not self.slug:
             slug = slugify(self.name)
             self.slug = get_unique_slug(Skill, slug)
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
@@ -161,7 +162,7 @@ class Company(models.Model):
         if not self.slug:
             slug = slugify(self.name)
             self.slug = get_unique_slug(Company, slug)
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -180,6 +181,7 @@ class CompanyAction(models.Model):
     STATUS_CHOICES = (
         ('to_do', 'To Do'),
         ('done', 'Done'),
+        ('cancelled', 'Cancelled'),
     )
     action = models.CharField(max_length=25, choices=ACTION_CHOICES)
     status = models.CharField(
@@ -190,6 +192,7 @@ class CompanyAction(models.Model):
     document = models.FileField(
         upload_to='uploads/actions/companies/%Y/%m/%d/', blank=True)
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+    completed_timestamp = models.DateTimeField(null=True, db_index=True)
     company = models.ForeignKey(Company, related_name='company_actions')
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='company_actions',
@@ -200,6 +203,15 @@ class CompanyAction(models.Model):
 
     def get_absolute_url(self):
         return self.company.get_absolute_url()
+
+    def get_update_url(self):
+        return reverse('crm_company_action_update', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        if self.status == 'done':
+            if not self.completed_timestamp:
+                self.completed_timestamp = timezone.now()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.action
@@ -256,9 +268,8 @@ class Contact(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             slug = slugify(self.get_full_name())
-            company_name = self.company.name
             self.slug = get_unique_slug(Contact, slug)
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return '{}: {}'.format(self.email, self.company)

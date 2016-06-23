@@ -52,15 +52,37 @@
               </div>
               <div class="panel-body">
                 {% for company_action in company.company_actions.all %}
-                  <div class="panel panel-default">
-                    <div class="panel-body">
-                      <h4>
-                        {{ company_action.action|title }}
-                        <span class="small">{{ company_action.timestamp|date }} by {{ company_action.created_by.get_full_name|title }}</span>
-                      </h4>
+
+                  {% if company_action.status == 'done' %}
+
+                    <div class="bs-callout bs-callout-default">
+                      <h4>{{ company_action.action|title }}</h4>
                       {{ company_action.description }}
+                      <p><span class="small">Completed: {{ company_action.completed_timestamp|date }} by {{ company_action.created_by.get_full_name|title }}</span></p>
                     </div>
-                  </div>
+
+                  {% elif company_action.status == 'to_do' %}
+                    <div class="bs-callout bs-callout-danger">
+                      <h4>{{ company_action.action|title }}</h4>
+                      {{ company_action.description }}
+                      <p><span class="small">Created: {{ company_action.timestamp|date }} by {{ company_action.created_by.get_full_name|title }}. <a href="{{ company_action.get_update_url }}">Mark as done.</a></span></p>
+                    </div>
+
+                  {% endif %}
+
+{#                  <div class="panel panel-default">#}
+{#                    <div class="panel-body">#}
+{#                      <h4>{{ company_action.action|title }}</h4>#}
+{#                      {{ company_action.description }}#}
+{#                      <p>#}
+{#                      {% if company_action.status == 'done' %}#}
+{#                        <span class="small">Completed on {{ company_action.timestamp|date }} by {{ company_action.created_by.get_full_name|title }}</span>#}
+{#                      {% elif company_action.status == 'to_do' %}#}
+{#                        <span class="small">To do. Created by {{ company_action.created_by.get_full_name|title }}</span>#}
+{#                      {% endif %}#}
+{#                      </p>#}
+{#                    </div>#}
+{#                  </div>#}
                 {% empty %}
                   <ul>
                     <li>
