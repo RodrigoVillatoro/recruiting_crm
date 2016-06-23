@@ -16,6 +16,8 @@
             {% endif %}
             <strong>{{ skill.name }}</strong>
           </a>
+        {% empty %}
+          <p>There are no skills to display. Start by adding one.</p>
         {% endfor %}
       </div>
     </div>

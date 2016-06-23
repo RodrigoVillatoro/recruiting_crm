@@ -17,6 +17,8 @@
             <strong>{{ company.name }}</strong>
             <small> - {{ company.created_by.get_full_name|title }} </small>
           </a>
+        {% empty %}
+          <p>There are no companies to display. Start by adding one.</p>
         {% endfor %}
       </div>
     </div>

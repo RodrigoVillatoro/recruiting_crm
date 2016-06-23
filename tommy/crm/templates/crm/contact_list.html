@@ -14,6 +14,8 @@
             <strong>{{ contact.get_full_name }}</strong>
             <small> - {{ contact.company }}</small>
           </a>
+        {% empty %}
+          <p>There are no contacts to display.</p>
         {% endfor %}
       </div>
     </div>
