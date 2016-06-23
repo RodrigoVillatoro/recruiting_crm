@@ -90,6 +90,7 @@ class JobForm(
                 'description',
                 'job_type',
                 'salary',
+                'company',
                 'num_vacancies',
                 'skills',
                 'assigned_to'
