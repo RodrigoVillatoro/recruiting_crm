@@ -71,6 +71,7 @@ class CompanyActionCreate(CreatedByFormValidMixin, InjectCompanyContextMixin,
 class CompanyActionUpdate(UpdateView):
     form_class = CompanyActionUpdateForm
     model = CompanyAction
+    context_object_name = 'company_action'
     template_name = 'crm/company_action_update.html'
 
 

@@ -2,7 +2,7 @@ from django import forms
 from django.forms.widgets import HiddenInput
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Fieldset, Layout
+from crispy_forms.layout import Field, Fieldset, Layout
 
 from .models import Company, CompanyAction, Contact, Job, JobAction, Skill
 from .utils import CreatedByMixin, CrispyMixin, SlugCleanMixin
@@ -32,19 +32,12 @@ class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
                 'Company Details',
                 'website',
                 'description',
-
             ),
             Fieldset(
                 'Other Info',
                 'legal_name',
                 'cif',
                 'fee',
-            ),
-            Fieldset(
-                'Nubelo',
-                'nubelo_id',
-                'nubelo_url',
-                'official_company',
             ),
         )
 
@@ -56,14 +49,16 @@ class CompanyForm(CreatedByMixin, CrispyMixin, SlugCleanMixin,
 class CompanyActionForm(CreatedByMixin, CrispyMixin, forms.ModelForm):
     class Meta:
         model = CompanyAction
-        exclude = ('created_by', 'completed_timestamp')
+        exclude = (
+            'created_by', 'completed_timestamp', 'document', 'is_highlighted')
         widgets = {'company': HiddenInput()}
 
 
 class CompanyActionUpdateForm(CrispyMixin, forms.ModelForm):
     class Meta:
         model = CompanyAction
-        exclude = ('created_by', 'completed_timestamp', 'company', 'action')
+        exclude = ('created_by', 'completed_timestamp', 'company',
+                   'document', 'is_highlighted', 'action')
 
 
 class ContactForm(
@@ -86,6 +81,30 @@ class ContactFormGeneral(
 class JobForm(
     CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Fieldset(
+                'General Info',
+                'title',
+                'description',
+                'job_type',
+                'salary',
+                'num_vacancies',
+                'skills',
+                'assigned_to'
+            ),
+            Fieldset(
+                'Location',
+                'city',
+                'zip_code',
+            ),
+            Fieldset(
+                'Other Info',
+                'fee',
+            ),
+        )
+
     class Meta:
         model = Job
         exclude = ('created_by', 'slug')
@@ -94,6 +113,32 @@ class JobForm(
 
 class JobFormGeneral(
     CreatedByMixin, CrispyMixin, SlugCleanMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Fieldset(
+                'General Info',
+                'title',
+                'description',
+                'job_type',
+                'salary',
+                'num_vacancies',
+                'company',
+                'skills',
+                'assigned_to'
+            ),
+            Fieldset(
+                'Location',
+                'city',
+                'zip_code',
+            ),
+            Fieldset(
+                'Other Info',
+                'fee',
+            ),
+        )
+
 
     class Meta:
         model = Job
