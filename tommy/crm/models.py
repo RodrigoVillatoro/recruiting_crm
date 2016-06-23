@@ -345,6 +345,12 @@ class Job(models.Model):
                 'job_slug': self.slug
             })
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = slugify(self.title)
+            self.slug = get_unique_slug(Job, slug)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return '{}: {}'.format(self.company, self.title)
 
