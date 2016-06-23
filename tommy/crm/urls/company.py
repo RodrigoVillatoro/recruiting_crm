@@ -46,7 +46,7 @@ urlpatterns = [
         name='crm_company_action_create'
     ),
     url(
-        r'^/action/(?P<pk>\d+)/update/$',
+        r'^action/(?P<pk>\d+)/update/$',
         CompanyActionUpdate.as_view(),
         name='crm_company_action_update'
     ),
