@@ -53,7 +53,7 @@ class Skill(models.Model):
         ordering = ('name',)
 
     def get_absolute_url(self):
-        return reverse('crm_skill_list')
+        return reverse('crm_skill_detail', kwargs={'slug': self.slug})
 
     def clean(self):
         self.name = self.name.lower()
