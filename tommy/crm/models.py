@@ -183,7 +183,7 @@ class CompanyAction(models.Model):
         ('done', 'Done'),
         ('cancelled', 'Cancelled'),
     )
-    action = models.CharField(max_length=25, choices=ACTION_CHOICES)
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES)
     status = models.CharField(
         max_length=25, choices=STATUS_CHOICES, default='to_do')
     description = models.TextField()
@@ -364,9 +364,8 @@ class JobAction(models.Model):
         ('candidate_rejected_offer', 'Candidate Rejected Offer'),
         ('other', 'Other'),
     )
-    action = models.CharField(max_length=25, choices=ACTION_CHOICES)
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES)
     action_num_candidates = models.IntegerField(default=1)
-    title = models.CharField(max_length=100, blank=True)
     description = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     is_highlighted = models.BooleanField(default=False)
